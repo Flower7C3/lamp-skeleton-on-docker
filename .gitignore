@@ -1,0 +1,11 @@
+.idea
+Icon
+.DS_Store
+
+docker/docker-compose.yml
+database/*
+domains/*
+domains/domains.list
+!domains/default/
+!domains/domains.list.dist
+projects/
