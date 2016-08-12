@@ -361,13 +361,13 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title">
                                         <em class="fa fa-fw fa-info-circle"></em>
-                                        Howto
+                                        Howto setup domain
                                     </h4>
                                 </div>
                                 <div class="modal-body">
                                     <ul type="1">
                                         <li>Create project or clone project git repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
-                                        <li>Add project to <code>./symlinks.sh</code> script and run it, eg: <code>[example.com]=000_example/www</code>.</li>
+                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"</code> command which will create docker .</li>
                                         <li>Create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
                                             <pre><?= file_get_contents('DEFAULT.ini') ?></pre>
                                         </li>
@@ -392,8 +392,11 @@
                                         </h4>
                                     </div>
                                     <div class="modal-body">
-                                        Copy following code and paste into <code>/etc/hosts</code> file at Your local machine.
-                                        <div class="form-control" style="width: 100%;height: 400px; resize: none"><?= $_SERVER['SERVER_ADDR'] . "\t" . implode("\t", $HOSTS) ?></div>
+                                        <div class="alert alert-info">
+                                            <em class="fa fa-info-circle"></em>
+                                            If You have problems with <a href="http://xip.io">xip.io</a> (or You are not connected to the internet) please copy following code and paste into <code>/etc/hosts</code> file at Your local machine.
+                                        </div>
+                                        <textarea class="form-control" style="width: 100%;height: 400px; resize: none" readonly><?= $currentVhost . "\t" . implode(" ", $HOSTS) ?></textarea>
                                     </div>
                                 </div>
                             </div>
