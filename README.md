@@ -2,7 +2,7 @@
 
 ## Create containers
 
-1. Clone this repo to *~/www/* direcoty.
+1. Clone this repo to *~/www/* directory.
 2. Instead command `docker-compose` use *docker-compose-prepare.sh* with proper arguments, eg.: `./bin/docker-compose-prepare.sh up -d`
 
 
