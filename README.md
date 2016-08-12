@@ -30,10 +30,11 @@ Network _webserver_ with gatweway _192.168.33.254_
 Available containers:
 * proxy - nginx proxy host with exposed port *80* to [localhost](http://127.0.0.1:80), docker ip *192.168.33.254*
 * mysql55 - mySQL server with exposed port *3306* to localhost, docker ip *192.168.33.155*
-* php55 - Apache server with PHP 5.5 available on localhost via proxy, docker ip: *192.168.33.55*
-* php56 - Apache server with PHP 5.6 available on localhost via proxy, docker ip: *192.168.33.56*
-* php70 - Apache server with PHP 7 available on localhost vi proxy, docker ip: *192.168.33.70*
+* php55 - Apache server with PHP 5.5.x available on localhost via proxy, docker ip: *192.168.33.55*
+* php56 - Apache server with PHP 5.6.x available on localhost via proxy, docker ip: *192.168.33.56*
+* php70 - Apache server with PHP 7.0.x available on localhost via proxy, docker ip: *192.168.33.70*
 * node4 - Apache server with node 4 with exposed to port *9004* to [localhost](http://127.0.0.1:9004), docker ip *192.168.33.104*
+* node5 - Apache server with node 4 with exposed to port *9005* to [localhost](http://127.0.0.1:9005), docker ip *192.168.33.105*
 
 # Connection
 
