@@ -2,7 +2,8 @@
 
 ## Create containers
 
-Instead command `docker-compose` use *docker-compose-prepare.sh* with proper arguments, eg.: `./bin/docker-compose-prepare.sh up -d`
+1. Clone this repo to *~/www/* direcoty.
+2. Instead command `docker-compose` use *docker-compose-prepare.sh* with proper arguments, eg.: `./bin/docker-compose-prepare.sh up -d`
 
 
 ## Configure project domains
@@ -38,8 +39,8 @@ Available containers:
 
 # Connection
 
-1. Master domain in _~/Documents/domains/default/_ with address [127.0.0.1](http://127.0.0.1)
-2. Other as _~/Documents/domains/\*.127.0.0.1.xip.io/_ with address as symlink name, eg. [test.php55.127.0.0.1.xip.io](http://test.php55.127.0.0.1.xip.io)
+1. Master domain in *~/www/domains/default/* with address [127.0.0.1](http://127.0.0.1)
+2. Other as *~/www/domains/\*.127.0.0.1.xip.io/* with address as symlink name, eg. [test.php55.127.0.0.1.xip.io](http://test.php55.127.0.0.1.xip.io)
 3. mySQL on *127.0.0.1:3306*
 
 ---

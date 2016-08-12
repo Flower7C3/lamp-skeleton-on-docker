@@ -8,4 +8,5 @@ domains/*
 domains/domains.list
 !domains/default/
 !domains/domains.list.dist
-projects/
+projects/*
+
