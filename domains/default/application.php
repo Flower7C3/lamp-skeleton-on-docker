@@ -106,14 +106,15 @@ while (false !== ($filename = readdir($dh))) {
         foreach ($descriptionFiles as $descriptionFile) {
             if (file_exists($descriptionFile)) {
                 $config = parse_ini_file($descriptionFile, true);
-                if (isset($config['domains']['local'])) {
+
+                if (isset($config['domains'])) {
+                    $data['domains'] = $config['domains'];
+                    foreach ($config['domains'] as $key => $url) {
+                        $data['domains'][$key] = domainMenu($key, $url);
+                    }
+                }
+                if(isset($config['domains']['local'])) {
                     $data['url'] = $config['domains']['local'];
-                }
-                if (isset($config['domains']['dev'])) {
-                    $data['devUrl'] = $config['domains']['dev'];
-                }
-                if (isset($config['domains']['stage'])) {
-                    $data['stageUrl'] = $config['domains']['stage'];
                 }
                 if (isset($config['domains']['prod'])) {
                     $data['liveUrl'] = $config['domains']['prod'];
@@ -132,6 +133,7 @@ while (false !== ($filename = readdir($dh))) {
                     $data['code'] = $config['code'];
                 }
                 if (!empty($config['tools'])) {
+                    $data['tools'] = $config['tools'];
                     foreach ($config['tools'] as $key => $url) {
                         $data['tools'][$key] = toolMenu($key, $url);
                     }
@@ -182,3 +184,8 @@ natcasesort($CLIENTS);
 
 $TAGS = array_unique($TAGS);
 natcasesort($TAGS);
+
+$TOOLS_MENU = array();
+foreach ($TOOLS as $code => $url) {
+    $TOOLS_MENU[] = toolMenu($code, $url);
+}

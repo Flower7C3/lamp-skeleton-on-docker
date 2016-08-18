@@ -81,6 +81,28 @@ $filesAsTags = [
     'app/appKernel.php' => ['Symfony', 'PHP'],
 ];
 $VHOSTS = [];
+$_DOMAINS_META = [
+    'url' => [
+        'title' => "Local development page",
+        'name' => 'Local',
+        'icons' => ['code'],
+    ],
+    'devUrl' => [
+        'title' => "Development page",
+        'name' => 'Development',
+        'icons' => ['globe'],
+    ],
+    'stageUrl' => [
+        'title' => "Pre-production (stage) page",
+        'name' => 'Pre-production (stage)',
+        'icons' => ['globe'],
+    ],
+    'liveUrl' => [
+        'title' => "Production (live) page",
+        'name' => 'Production (live)',
+        'icons' => ['industry'],
+    ],
+];
 $_TOOLS_META = [
     'repo' => (object)[
         'icons' => ['code-fork'],
@@ -146,11 +168,31 @@ $infoList = [
 /**
  * methods
  */
+function domainMenu($key, $url)
+{
+    global $_DOMAINS_META;
+    if (isset($_DOMAINS_META[$key])) {
+        $temp = clone $_DOMAINS_META[$key];
+    } else {
+        $temp = (object)array(
+            'title' => $key,
+            'name' => $key,
+            'url' => NULL,
+            'icons' => array(
+                'globe'
+            ),
+        );
+    }
+    $temp->url = $url;
+    $temp->code = md5($temp->url);
+    return $temp;
+}
+
 function toolMenu($key, $url)
 {
-    global $toolList;
-    if (isset($toolList[$key])) {
-        $temp = clone $toolList[$key];
+    global $_TOOLS_META;
+    if (isset($_TOOLS_META[$key])) {
+        $temp = clone $_TOOLS_META[$key];
     } else {
         $temp = (object)array(
             'title' => $key,
@@ -176,7 +218,7 @@ function toolMenu($key, $url)
         $temp->icons[] = 'link';
     }
     $temp->url = $url;
-    $temp->code = md5($temp->title);
+    $temp->code = md5($temp->url);
     return $temp;
 }
 

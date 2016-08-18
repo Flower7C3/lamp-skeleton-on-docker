@@ -101,12 +101,12 @@
                         </ul>
                     <? endif; ?>
                     <ul class="nav navbar-nav navbar-right">
-                        <? foreach ($TOOLS as $key => $val): ?>
+                        <? foreach ($TOOLS_MENU as $tool): ?>
                             <li>
-                                <a href="<?= $val ?>" title="<?= isset($_TOOLS_META[$key]->title) ? $_TOOLS_META[$key]->title : $val ?>">
-                                    <em class="fa fa-fw fa-<?= isset($_TOOLS_META[$key]->icons) ? $_TOOLS_META[$key]->icons[0] : 'square' ?>"></em>
+                                <a href="<?= $tool->url ?>" title="<?= $tool->title ?>">
+                                    <em class="fa fa-fw fa-<?= $tool->icons[0] ?>"></em>
                                     <span class="hidden-sm hidden-md hidden-lg">
-                                        <?= isset($_TOOLS_META[$key]->name) ? $_TOOLS_META[$key]->name : $val ?>
+                                        <?= $tool->name ?>
                                         <small class="fa fa-external-link"></small>
                                     </span>
                                 </a>
@@ -222,15 +222,16 @@
                                         </td>
                                         <td class="links">
                                             <nav class="btn-group pull-right links">
-                                                <div class="btn-group" role="group">
-                                                    <?= generateLink('dropdown', ['title' => "Domains", 'class' => "btn btn-primary btn-xs",], ['globe']) ?>
-                                                    <ul class="dropdown-menu">
-                                                        <?= generateListLink($domain->url, ['title' => "Local development page",], ['code'], 'Local') ?>
-                                                        <?= generateListLink($domain->devUrl, ['title' => "Development page",], ['globe'], 'Development') ?>
-                                                        <?= generateListLink($domain->stageUrl, ['title' => "Pre-production (stage) page",], ['globe'], 'Pre-production (stage)') ?>
-                                                        <?= generateListLink($domain->liveUrl, ['title' => "Production (live) page",], ['industry'], 'Production (live)') ?>
-                                                    </ul>
-                                                </div>
+                                                <? if (!empty($domain->domains)): ?>
+                                                    <div class="btn-group" role="group">
+                                                        <?= generateLink('dropdown', ['title' => "Domains", 'class' => "btn btn-primary btn-xs",], ['globe']) ?>
+                                                        <ul class="dropdown-menu">
+                                                            <? foreach ($domain->domains as $host): ?>
+                                                                <?= generateListLink($host->url, ['title' => $host->title,], $host->icons, $host->name) ?>
+                                                            <? endforeach; ?>
+                                                        </ul>
+                                                    </div>
+                                                <? endif; ?>
                                                 <? if (!empty($domain->tools) || !empty($domain->repoUrl)): ?>
                                                     <div class="btn-group" role="group">
                                                         <?= generateLink('dropdown', ['title' => "External tools", 'class' => "btn btn-primary btn-xs",], ['wrench']) ?>
@@ -297,14 +298,15 @@
                                 <?= $domain->name ?>
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-header">
-                                    <em class="fa fa-fw fa-globe"></em>
-                                    Domains
-                                </li>
-                                <?= generateListLink($domain->url, ['title' => "Local development page",], ['code'], 'Local') ?>
-                                <?= generateListLink($domain->devUrl, ['title' => "Development page",], ['globe'], 'Development') ?>
-                                <?= generateListLink($domain->stageUrl, ['title' => "Pre-production (stage) page",], ['globe'], 'Pre-production (stage)') ?>
-                                <?= generateListLink($domain->liveUrl, ['title' => "Production (live) page",], ['industry'], 'Production (live)') ?>
+                                <? if (!empty($domain->domains)): ?>
+                                    <li class="dropdown-header">
+                                        <em class="fa fa-fw fa-globe"></em>
+                                        Domains
+                                    </li>
+                                    <? foreach ($domain->domains as $host): ?>
+                                        <?= generateListLink($host->url, ['title' => $host->title,], $host->icons, $host->name) ?>
+                                    <? endforeach; ?>
+                                <? endif; ?>
                                 <? if (!empty($domain->tools) || !empty($domain->repoUrl)): ?>
                                     <li role="separator" class="divider"></li>
                                     <li class="dropdown-header">
