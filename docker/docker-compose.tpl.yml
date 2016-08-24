@@ -9,8 +9,8 @@ services:
     networks:
       webserver:
         ipv4_address: ${PROXY_DOCKER_NETWORK_IP}
-#    ports:
-#      - "${PROXY_HTTP0_LOCAL_IP}:80"
+    ports:
+      - "${PROXY_HTTP0_LOCAL_IP}:80"
 #      - "${PROXY_HTTP1_LOCAL_IP}:81"
 #      - "${PROXY_HTTPS_LOCAL_IP}:443"
     restart: always
@@ -55,16 +55,14 @@ services:
       - mysql55
     dns: ${DNS_IP}
     environment:
-      - VIRTUAL_HOST=${PHP55_VIRTUAL_HOSTS}
-      # - XDEBUG_CONFIG="remote_host=192.168.10.220" #$(ifconfig en0 | grep 'inet ' | cut -d" " -f2)
+      VIRTUAL_HOST: ${PHP55_VIRTUAL_HOSTS}
+      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
     image: flower7c3:php55
     links:
       - mysql55
     networks:
       webserver:
         ipv4_address: ${PHP55_DOCKER_NETWORK_IP}
-#    ports:
-#      - "9070:9000"
     restart: always
     volumes:
       - "~/.ssh/:/root/.ssh/"
@@ -79,7 +77,8 @@ services:
       dockerfile: Dockerfile
     container_name: php56
     environment:
-      - VIRTUAL_HOST=${PHP56_VIRTUAL_HOSTS}
+      VIRTUAL_HOST: ${PHP56_VIRTUAL_HOSTS}
+      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
     depends_on:
       - mysql55
     dns: ${DNS_IP}
@@ -106,8 +105,8 @@ services:
       - mysql55
     dns: ${DNS_IP}
     environment:
-      - VIRTUAL_HOST=${PHP70_VIRTUAL_HOSTS}
-#      - XDEBUG_CONFIG='remote_host=${HOST_IPS[1]}'
+      VIRTUAL_HOST: ${PHP70_VIRTUAL_HOSTS}
+      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
     image: flower7c3:php70
     links:
       - mysql55
