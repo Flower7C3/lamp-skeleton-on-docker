@@ -9,8 +9,8 @@ services:
     networks:
       webserver:
         ipv4_address: ${PROXY_DOCKER_NETWORK_IP}
-    ports:
-      - "${PROXY_HTTP0_LOCAL_IP}:80"
+#    ports:
+#      - "${PROXY_HTTP0_LOCAL_IP}:80"
 #      - "${PROXY_HTTP1_LOCAL_IP}:81"
 #      - "${PROXY_HTTPS_LOCAL_IP}:443"
     restart: always
