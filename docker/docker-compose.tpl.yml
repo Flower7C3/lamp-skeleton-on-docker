@@ -133,7 +133,7 @@ services:
     networks:
       webserver:
         ipv4_address: ${NODE4_DOCKER_NETWORK_IP}
-    restart: always
+#    restart: always
     tty: true
     volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"
@@ -152,7 +152,7 @@ services:
     networks:
       webserver:
         ipv4_address: ${NODE5_DOCKER_NETWORK_IP}
-    restart: always
+#    restart: always
     tty: true
     volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"
