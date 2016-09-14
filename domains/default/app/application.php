@@ -1,8 +1,13 @@
 <?php
 
 
-require 'config.dist.php';
-require 'config.php';
+require 'class/Resource.class.php';
+require 'class/SiteResource.class.php';
+require 'class/ToolResource.class.php';
+require 'class/InfoResource.class.php';
+require 'class/PathResource.class.php';
+require 'config/config.dist.php';
+require 'config/config.php';
 
 /**
  * versions
@@ -37,13 +42,13 @@ while (false !== ($filename = readdir($dh))) {
             'code' => null,
             'name' => null,
             'url' => null,
-            'devUrl' => null,
-            'stageUrl' => null,
             'liveUrl' => null,
-            'repoUrl' => null,
             'date' => null,
+            'domains' => [],
             'tools' => [],
+            'info' => [],
             'tags' => [],
+            'path' => [],
         ];
 
         # domain and paths
@@ -76,15 +81,12 @@ while (false !== ($filename = readdir($dh))) {
 
         # local and live URLs
         $data['url'] = 'http://' . $localDomain . $baseurl;
-        if (preg_match("'\.'", $externalDomain)) {
-            $data['liveUrl'] = 'http://' . $externalDomain;
-        }
 
         # repo URL
         if (file_exists($symlinkPath . '/.git/config')) {
             $gitConfig = parse_ini_file($symlinkPath . '/.git/config', true);
             if (!empty($gitConfig['remote origin']['url'])) {
-                $data['path']['repo'] = $gitConfig['remote origin']['url'];
+                $data['path'][] = new PathResource('repo', $gitConfig['remote origin']['url']);
                 $data['repoUrl'] = preg_replace("'^git@(.*):(.*)\.git$'", "https://$1/$2", $gitConfig['remote origin']['url']);
             }
             foreach ($gitConfig as $gName => $gData) {
@@ -106,23 +108,59 @@ while (false !== ($filename = readdir($dh))) {
         foreach ($descriptionFiles as $descriptionFile) {
             if (file_exists($descriptionFile)) {
                 $config = parse_ini_file($descriptionFile, true);
-
-                if (isset($config['domains'])) {
-                    $data['domains'] = $config['domains'];
-                    foreach ($config['domains'] as $key => $url) {
-                        $data['domains'][$key] = domainMenu($key, $url);
+                /*
+                 * domains
+                 */
+                if (!isset($data['domains']['local'])) {
+                    $config['domains']['local'] = $data['url'];
+                }
+                if (preg_match("'\.'", $externalDomain)) {
+                    if (!isset($config['domains']['live'])) {
+                        $config['domains']['live'] = 'http://' . $externalDomain;
                     }
                 }
-                if(isset($config['domains']['local'])) {
-                    $data['url'] = $config['domains']['local'];
+                if (isset($config['domains'])) {
+                    $data['domains'] = array();
+                    foreach ($config['domains'] as $key => $url) {
+                        if (!empty($url)) {
+                            $data['domains'][$key] = new SiteResource($key, $url);
+                        }
+                    }
                 }
-                if (isset($config['domains']['prod'])) {
-                    $data['liveUrl'] = $config['domains']['prod'];
+                /*
+                 * tools
+                 */
+                if (!isset($config['tools']['repo']) && isset($data['repoUrl'])) {
+                    $config['tools']['repo'] = $data['repoUrl'];
+                    unset($data['repoUrl']);
                 }
-                if (isset($config['tools']['repo'])) {
-                    $data['repoUrl'] = $config['tools']['repo'];
-                    unset($config['tools']['repo']);
+                if (!empty($config['tools'])) {
+                    $data['tools'] = $config['tools'];
+                    foreach ($config['tools'] as $key => $url) {
+                        if (!empty($url)) {
+                            $data['tools'][$key] = new ToolResource($key, $url);
+                        }
+                    }
+                    ksort($data['tools']);
                 }
+                /*
+                 * info
+                 */
+                if (!empty($config['info'])) {
+                    foreach ($config['info'] as $key => $val) {
+                        $data['info'][$key] = new InfoResource($key, $val);
+                    }
+                }
+                /*
+                 * note
+                 */
+                if (!empty($config['note'])) {
+                    krsort($config['note']);
+                    $data['note'] = $config['note'];
+                }
+                /*
+                 * tags and info
+                 */
                 if (isset($config['client_id'])) {
                     $data['client_id'] = $config['client_id'];
                 }
@@ -131,22 +169,6 @@ while (false !== ($filename = readdir($dh))) {
                 }
                 if (isset($config['code'])) {
                     $data['code'] = $config['code'];
-                }
-                if (!empty($config['tools'])) {
-                    $data['tools'] = $config['tools'];
-                    foreach ($config['tools'] as $key => $url) {
-                        $data['tools'][$key] = toolMenu($key, $url);
-                    }
-                    ksort($data['tools']);
-                }
-                if (!empty($config['info'])) {
-                    foreach ($config['info'] as $key => $val) {
-                        $data['info'][$key] = infoMenu($key, $val);
-                    }
-                }
-                if (!empty($config['note'])) {
-                    krsort($config['note']);
-                    $data['note'] = $config['note'];
                 }
                 if (!empty($config['tags'])) {
                     $data['tags'] = explode(',', $config['tags']);
@@ -166,8 +188,8 @@ while (false !== ($filename = readdir($dh))) {
             $TAGS[$t] = $t;
         }
 
-        $data['path']['real'] = $realPath;
-        $data['path']['link'] = $symlinkPath;
+        $data['path'][] = new PathResource('real', $realPath);
+        $data['path'][] = new PathResource('link', $symlinkPath);
 
         $CLIENTS[$data['client_id']] = $data['client_id'];
 
@@ -184,8 +206,3 @@ natcasesort($CLIENTS);
 
 $TAGS = array_unique($TAGS);
 natcasesort($TAGS);
-
-$TOOLS_MENU = array();
-foreach ($TOOLS as $code => $url) {
-    $TOOLS_MENU[] = toolMenu($code, $url);
-}

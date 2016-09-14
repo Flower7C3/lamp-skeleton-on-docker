@@ -102,15 +102,7 @@
                     <? endif; ?>
                     <ul class="nav navbar-nav navbar-right">
                         <? foreach ($TOOLS_MENU as $tool): ?>
-                            <li>
-                                <a href="<?= $tool->url ?>" title="<?= $tool->title ?>">
-                                    <em class="fa fa-fw fa-<?= $tool->icons[0] ?>"></em>
-                                    <span class="hidden-sm hidden-md hidden-lg">
-                                        <?= $tool->name ?>
-                                        <small class="fa fa-external-link"></small>
-                                    </span>
-                                </a>
-                            </li>
+                            <?= generateListLink($tool, null, null, null, array('class' => 'hidden-sm hidden-md hidden-lg', 'append' => '<small class="fa fa-external-link"></small>')) ?>
                         <? endforeach; ?>
                         <li>
                             <a data-toggle="modal" href="#howto" title="Howto info">
@@ -227,18 +219,17 @@
                                                         <?= generateLink('dropdown', ['title' => "Domains", 'class' => "btn btn-primary btn-xs",], ['globe']) ?>
                                                         <ul class="dropdown-menu">
                                                             <? foreach ($domain->domains as $host): ?>
-                                                                <?= generateListLink($host->url, ['title' => $host->title,], $host->icons, $host->name) ?>
+                                                                <?= generateListLink($host) ?>
                                                             <? endforeach; ?>
                                                         </ul>
                                                     </div>
                                                 <? endif; ?>
-                                                <? if (!empty($domain->tools) || !empty($domain->repoUrl)): ?>
+                                                <? if (!empty($domain->tools)): ?>
                                                     <div class="btn-group" role="group">
                                                         <?= generateLink('dropdown', ['title' => "External tools", 'class' => "btn btn-primary btn-xs",], ['wrench']) ?>
                                                         <ul class="dropdown-menu">
-                                                            <?= generateListLink($domain->repoUrl, ['title' => "GIT repository",], ['code-fork'], 'GIT') ?>
                                                             <? foreach ($domain->tools as $tool): ?>
-                                                                <?= generateListLink($tool->url, ['title' => $tool->title], $tool->icons, $tool->name) ?>
+                                                                <?= generateListLink($tool) ?>
                                                             <? endforeach; ?>
                                                         </ul>
                                                     </div>
@@ -248,7 +239,7 @@
                                                         <?= generateLink('dropdown', ['title' => "Domain info", 'class' => "btn btn-info btn-xs",], ['info-circle']) ?>
                                                         <ul class="dropdown-menu">
                                                             <? foreach ($domain->info as $info): ?>
-                                                                <?= generateListLink("javascript://undefined", ['title' => 'Copy ' . $info->title, 'data-copy' => '#domain-' . $i . '-info-' . $info->code . ''], $info->icons, $info->name . ' <code>' . $info->value . '</code>') ?>
+                                                                <?= generateListLink("javascript://undefined", ['title' => 'Copy ' . $info->getTitle(), 'data-copy' => '#domain-' . $i . '-info-' . $info->getCode() . ''], $info->getIcons(), $info->getName() . ' <code>' . $info->getValue() . '</code>') ?>
                                                             <? endforeach; ?>
                                                         </ul>
                                                     </div>
@@ -259,11 +250,9 @@
                                                         <? if (!empty($domain->code)): ?>
                                                             <?= generateListLink("javascript://undefined", ['title' => 'Copy project code', 'data-copy' => '#domain-' . $i . '-code'], ['barcode'], 'Code') ?>
                                                         <? endif; ?>
-                                                        <?= generateListLink("javascript://undefined", ['title' => 'Copy real path', 'data-copy' => '#domain-' . $i . '-realpath'], ['folder'], 'Real path') ?>
-                                                        <?= generateListLink("javascript://undefined", ['title' => 'Copy symlink path', 'data-copy' => '#domain-' . $i . '-symlink'], ['folder-o'], 'Symlink path') ?>
-                                                        <? if (!empty($domain->path['repo'])): ?>
-                                                            <?= generateListLink("javascript://undefined", ['title' => 'Copy repo path', 'data-copy' => '#domain-' . $i . '-repo'], ['code-fork'], 'Repo path') ?>
-                                                        <? endif; ?>
+                                                        <? foreach ($domain->path as $info): ?>
+                                                            <?= generateListLink("javascript://undefined", ['title' => 'Copy ' . $info->getTitle(), 'data-copy' => '#domain-' . $i . '-path-' . $info->getCode() . ''], $info->getIcons(), $info->getName()) ?>
+                                                        <? endforeach; ?>
                                                     </ul>
                                                 </div>
                                                 <? if (!empty($domain->note)): ?>
@@ -293,60 +282,57 @@
             <section role="context-menu">
                 <? foreach ($DOMAINS as $i => $domain): ?>
                     <section for="domain-<?= $i ?>">
-                        <div class="context-menu dropdown open" id="context-menu-id-<?= $i ?>">
-                            <button class="btn btn-default dropdown-toggle" disabled>
-                                <?= $domain->name ?>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <? if (!empty($domain->domains)): ?>
-                                    <li class="dropdown-header">
-                                        <em class="fa fa-fw fa-globe"></em>
-                                        Domains
-                                    </li>
-                                    <? foreach ($domain->domains as $host): ?>
-                                        <?= generateListLink($host->url, ['title' => $host->title,], $host->icons, $host->name) ?>
-                                    <? endforeach; ?>
-                                <? endif; ?>
-                                <? if (!empty($domain->tools) || !empty($domain->repoUrl)): ?>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header">
-                                        <em class="fa fa-fw fa-wrench"></em>
-                                        Tools
-                                    </li>
-                                    <?= generateListLink($domain->repoUrl, ['title' => "GIT repository",], ['code-fork'], 'GIT') ?>
-                                    <? foreach ($domain->tools as $tool): ?>
-                                        <?= generateListLink($tool->url, ['title' => $tool->title], $tool->icons, $tool->name) ?>
-                                    <? endforeach; ?>
-                                <? endif; ?>
-                                <? if (!empty($domain->info)): ?>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">
-                                    <em class="fa fa-fw fa-info-circle"></em>
-                                    Info
-                                    <? foreach ($domain->info as $info): ?>
-                                        <?= generateListLink("javascript://undefined", ['title' => 'Copy ' . $info->title, 'data-copy' => '#domain-' . $i . '-info-' . $info->code . ''], $info->icons, $info->name . ' <code>' . $info->value . '</code>') ?>
-                                    <? endforeach; ?>
+                        <? if (!empty($domain->domains) || !empty($domain->tools) || !empty($domain->info)): ?>
+                            <div class="context-menu dropdown open" id="context-menu-id-<?= $i ?>">
+                                <button class="btn btn-default dropdown-toggle" disabled>
+                                    <?= $domain->name ?>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <? if (!empty($domain->domains)): ?>
+                                        <li class="dropdown-header">
+                                            <em class="fa fa-fw fa-globe"></em>
+                                            Domains
+                                        </li>
+                                        <? foreach ($domain->domains as $host): ?>
+                                            <?= generateListLink($host) ?>
+                                        <? endforeach; ?>
                                     <? endif; ?>
-                                </li>
-                            </ul>
-                        </div>
+                                    <? if (!empty($domain->tools)): ?>
+                                        <li role="separator" class="divider"></li>
+                                        <li class="dropdown-header">
+                                            <em class="fa fa-fw fa-wrench"></em>
+                                            Tools
+                                        </li>
+                                        <? foreach ($domain->tools as $tool): ?>
+                                            <?= generateListLink($tool) ?>
+                                        <? endforeach; ?>
+                                    <? endif; ?>
+                                    <? if (!empty($domain->info)): ?>
+                                        <li role="separator" class="divider"></li>
+                                        <li class="dropdown-header">
+                                            <em class="fa fa-fw fa-info-circle"></em>
+                                            Info
+                                            <? foreach ($domain->info as $info): ?>
+                                                <?= generateListLink("javascript://undefined", ['title' => 'Copy ' . $info->getTitle(), 'data-copy' => '#domain-' . $i . '-info-' . $info->getCode() . ''], $info->getIcons(), $info->getName() . ' <code>' . $info->getValue() . '</code>') ?>
+                                            <? endforeach; ?>
+                                        </li>
+                                    <? endif; ?>
+                                </ul>
+                            </div>
+                        <? endif; ?>
                         <div class="input">
                             <? if (!empty($domain->code)): ?>
                                 <input id="domain-<?= $i ?>-code" value="s <?= $domain->code ?>">
                             <? endif; ?>
-                            <input id="domain-<?= $i ?>-realpath" value="<?= $domain->path['real'] ?>">
-                            <input id="domain-<?= $i ?>-symlink" value="<?= $domain->path['link'] ?>">
-                            <? if (!empty($domain->path['repo'])): ?>
-                                <input id="domain-<?= $i ?>-repo" value="git clone <?= $domain->path['repo'] ?> .">
-                            <? endif; ?>
                             <? foreach ($domain->tools as $tool): ?>
-                                <input id="domain-<?= $i ?>-tool-<?= $tool->code ?>" value="<?= $tool->url ?>">
+                                <input id="domain-<?= $i ?>-tool-<?= $tool->getCode() ?>" value="<?= $tool->getUrl() ?>">
                             <? endforeach; ?>
-                            <? if (!empty($domain->info)): ?>
-                                <? foreach ($domain->info as $info): ?>
-                                    <input id="domain-<?= $i ?>-info-<?= $info->code ?>" value="<?= $info->valueReal ?>">
-                                <? endforeach; ?>
-                            <? endif; ?>
+                            <? foreach ($domain->info as $info): ?>
+                                <input id="domain-<?= $i ?>-info-<?= $info->getCode() ?>" value="<?= $info->getValueReal() ?>">
+                            <? endforeach; ?>
+                            <? foreach ($domain->path as $path): ?>
+                                <input id="domain-<?= $i ?>-path-<?= $path->getCode() ?>" value="<?= $path->getPath() ?>">
+                            <? endforeach; ?>
                         </div>
                     </section>
                 <? endforeach; ?>
@@ -371,7 +357,7 @@
                                         <li>Create project or clone project git repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
                                         <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"</code> command which will create docker .</li>
                                         <li>Create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
-                                            <pre><?= file_get_contents('DEFAULT.ini') ?></pre>
+                                            <pre><?= file_get_contents('tpl/DEFAULT.ini') ?></pre>
                                         </li>
                                         <? if (!$isXip): ?>
                                             <li>Reload this page, click <em class="fa fa-cog"> Hosts config</em> button, copy data and paste to Your local <code>/etc/hosts</code> file.</li>
