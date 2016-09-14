@@ -1,4 +1,4 @@
-<?php require_once 'application.php'; ?>
+<?php require_once 'app/application.php'; ?>
 <!DOCTYPE html>
 <html>
     <head>
