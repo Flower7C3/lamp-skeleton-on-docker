@@ -107,6 +107,9 @@ function generateLink($href, array $params = null, $icons = null, $text = false,
 
     if ($href instanceof Resource) {
         $resource = $href;
+        if ($href instanceof SiteResource || $href instanceof ToolResource) {
+            $textParams['append'] = ' <em class="text-muted">' . $resource->getUrl() . '</em>';
+        }
         $href = $resource->getUrl();
         $params['title'] = $resource->getTitle();
         $text = $resource->getName();
@@ -140,9 +143,11 @@ function generateLink($href, array $params = null, $icons = null, $text = false,
             $link .= '<em class="fa fa-fw fa-' . $icon . '"></em>';
         }
     }
-    $link .= '<span class="' . $textParams['class'] . '">';
+    $link .= '<span' . (empty($textParams['class']) ? '' : ' class="' . $textParams['class'] . '"') . '>';
     $link .= $text;
-    $link .= $textParams['append'];
+    if (!empty($textParams['append'])) {
+        $link .= $textParams['append'];
+    }
     $link .= '</span>';
     $link .= '</a>';
     return $link;
