@@ -1,10 +1,8 @@
 body {
-    position: relative;
-    z-index: 1;
-    margin-top: 50px;
-}
-
-body:before {
+  position: relative;
+  z-index: 1;
+  margin-top: 50px; }
+  body:before {
     z-index: -1;
     position: fixed;
     left: 0;
@@ -15,105 +13,130 @@ body:before {
     background-position: center top;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-image: url('https://unsplash.it/1920/1080/?random');
+    background-image: url("https://unsplash.it/1920/1080/?random");
     /*opacity: 0.2;*/
     width: 100vw;
-    height: 100vh;
-}
+    height: 100vh; }
 
 .bootstrap-table .search .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
+  position: absolute;
+  top: 10px;
+  right: 10px; }
 
 .navbar .nav li.dropdown {
-    position: relative;
-}
-
-.navbar .nav li.dropdown .dropdown-menu {
+  position: relative; }
+  .navbar .nav li.dropdown .dropdown-menu {
     max-height: calc(100vh - 50px);
-    overflow: auto;
-}
+    overflow: auto; }
 
 a[data-copy] {
-    cursor: copy;
-}
+  cursor: copy; }
 
 .input input {
-    position: absolute;
-    top: -10000px;
-}
+  position: absolute;
+  top: -10000px; }
 
 /* table */
 .table-striped > thead > tr {
-    background-color: rgba(250, 250, 250, 0.89);
-}
-
+  background-color: rgba(250, 250, 250, 0.89); }
 .table-striped > tbody > tr:nth-of-type(2n) {
-    background-color: rgba(220, 220, 220, 0.89);
-}
-
+  background-color: rgba(220, 220, 220, 0.89); }
 .table-striped > tbody > tr:nth-of-type(2n+1) {
-    background-color: rgba(240, 240, 240, 0.89);
-}
+  background-color: rgba(240, 240, 240, 0.89); }
 
 .table-hover > tbody > tr:hover {
-    background-color: #F5F5F5;
-}
+  background-color: #F5F5F5; }
 
 td.name {
-    word-break: break-all;
-}
+  word-break: break-all; }
 
 td.tags {
-    word-break: break-all;
-}
+  word-break: break-all; }
 
 div.tags a:not(:last-child):after {
-    content: ',';
-}
+  content: ','; }
 
 div.tags {
-    font-size: 0.7em;
-}
+  font-size: 0.7em; }
 
 div.date {
-    width: 113px;
-}
+  width: 113px; }
 
 div.links {
-    width: 134px;
-}
+  width: 134px; }
 
 .fixed-table-body {
-    overflow: unset;
-}
+  overflow: unset; }
 
 .fixed-table-pagination,
 .fixed-table-pagination {
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-}
-
-.loading {
-    background-image: url(loader.gif);
-    background-position: top center;
-    background-repeat: no-repeat;
-}
+  color: #fff;
+  text-shadow: 1px 1px 1px #000; }
 
 .context-menu {
-    position: absolute;
-    display: none;
-    z-index: 9999;
-    min-width: 200px;
-}
-
-.context-menu.visible {
-    display: block;
-}
-
-.context-menu .dropdown-header {
+  position: absolute;
+  display: none;
+  z-index: 9999;
+  min-width: 200px; }
+  .context-menu.visible {
+    display: block; }
+  .context-menu .dropdown-header {
     padding: 3px 10px;
-    font-size: 1.2em;
-}
+    font-size: 1.2em; }
+
+.loading #loader {
+  display: block; }
+
+#loader {
+  display: none;
+  margin: 14px -117px;
+  position: absolute;
+  left: 50%;
+  width: 234px;
+  height: 28px; }
+  #loader .dot {
+    position: absolute;
+    top: 0;
+    background-color: black;
+    width: 28px;
+    height: 28px;
+    animation-name: bounce_fountainG;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    transform: scale(0.3);
+    border-radius: 19px; }
+    #loader .dot:nth-child(1) {
+      left: 0;
+      animation-delay: 0.6s; }
+    #loader .dot:nth-child(2) {
+      left: 29px;
+      animation-delay: 0.75s; }
+    #loader .dot:nth-child(3) {
+      left: 58px;
+      animation-delay: 0.9s; }
+    #loader .dot:nth-child(4) {
+      left: 88px;
+      animation-delay: 1.05s; }
+    #loader .dot:nth-child(5) {
+      left: 117px;
+      animation-delay: 1.2s; }
+    #loader .dot:nth-child(6) {
+      left: 146px;
+      animation-delay: 1.35s; }
+    #loader .dot:nth-child(7) {
+      left: 175px;
+      animation-delay: 1.5s; }
+    #loader .dot:nth-child(8) {
+      left: 205px;
+      animation-delay: 1.64s; }
+
+@keyframes bounce_fountainG {
+  0% {
+    transform: scale(1);
+    background-color: #777777; }
+  100% {
+    transform: scale(0.3);
+    background-color: white; } }
+
+/*# sourceMappingURL=main.css.map */

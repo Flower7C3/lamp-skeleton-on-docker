@@ -20,18 +20,18 @@ class SiteResource extends Resource
             'icons' => ['globe'],
         ],
         'stage' => [
-            'title' => "Pre-production page (stage)",
-            'name' => 'Pre-production (stage)',
+            'title' => "Development page (stage)",
+            'name' => 'Staging',
             'icons' => ['globe'],
         ],
         'master' => [
-            'title' => "Production  (master)",
+            'title' => "Production master)",
             'name' => 'Production (master)',
             'icons' => ['industry'],
         ],
         'prod' => [
             'title' => "Production page (prod)",
-            'name' => 'Production',
+            'name' => 'Production (prod)',
             'icons' => ['industry'],
         ],
         'live' => [
