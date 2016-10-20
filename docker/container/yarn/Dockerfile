@@ -9,14 +9,19 @@ RUN DEBIAN_FRONTEND="noninteractive" \
 
 ### install node and yarn
 RUN DEBIAN_FRONTEND="noninteractive" \
-    curl -sL https://deb.nodesource.com/setup_4.x | bash - \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3 \
+    && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
     && apt-get install -y --fix-missing \
         nodejs \
-        build-essential
+        build-essential \
+        yarn
 
 ### install gulp
 RUN DEBIAN_FRONTEND="noninteractive" \
-    npm install --global gulp gulp-cli node-gyp marked
+    yarn global add \
+        gulp gulp-cli \
+        node-gyp marked
 
 WORKDIR /var/www/domains

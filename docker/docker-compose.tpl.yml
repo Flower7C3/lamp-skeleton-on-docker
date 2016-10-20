@@ -9,10 +9,10 @@ services:
     networks:
       webserver:
         ipv4_address: ${PROXY_DOCKER_NETWORK_IP}
-#    ports:
-#      - "${PROXY_HTTP0_LOCAL_IP}:80"
+    ports:
+      - "${PROXY_HTTP0_LOCAL_IP}:80"
 #      - "${PROXY_HTTP1_LOCAL_IP}:81"
-#      - "${PROXY_HTTPS_LOCAL_IP}:443"
+      - "${PROXY_HTTPS_LOCAL_IP}:443"
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -117,6 +117,25 @@ services:
     volumes:
       - "~/.ssh/:/root/.ssh/"
       - "${VOLUME_WWW_INDEX}:/var/www/html/"
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/tools/"
+
+  yarn:
+    build:
+      context: ./container/yarn/
+      dockerfile: Dockerfile
+    container_name: yarn
+    dns: ${DNS_IP}
+    ports:
+      - "${YARN_LOCAL_IP}:8080"
+    image: flower7c3:yarn
+    networks:
+      webserver:
+        ipv4_address: ${YARN_DOCKER_NETWORK_IP}
+#    restart: always
+    tty: true
+    volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"
       - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/tools/"

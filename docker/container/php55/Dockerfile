@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
     && apt-get install -y \
         libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev libicu-dev \
         locales \
-        vim wget curl git \
+        vim mc wget curl git \
     && yes | pecl install intl \
     && yes | pecl install xdebug \
     && locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
