@@ -31,6 +31,7 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 ADD ./php.ini /usr/local/etc/php/php.ini
 ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+ADD apt-get install default-jre -y --fix-missing
 
 ### install imagick
 #RUN DEBIAN_FRONTEND="noninteractive" apt-get update \

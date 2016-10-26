@@ -1,12 +1,22 @@
 .idea
-Icon
+Icon\r
+
 .DS_Store
 
+certs/*.crt
+certs/*.csr
+certs/*.key
+certs/*.key.org
+
 docker/docker-compose.yml
-database/*
+docker-compose.yml
+
 domains/*
 domains/domains.list
 !domains/default/
 !domains/domains.list.dist
+
 projects/*
 
+mysql/*
+esdata/*
