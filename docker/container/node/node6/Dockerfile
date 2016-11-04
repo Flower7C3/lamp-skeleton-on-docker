@@ -1,15 +1,8 @@
-FROM debian:jessie
-
-### install base
-RUN DEBIAN_FRONTEND="noninteractive" \
-    && apt-get update \
-    && apt-get install -y --fix-missing \
-        vim mc wget curl git \
-        libpng-dev
+FROM flower7c3/debian:jessie
 
 ### install node and yarn
 RUN DEBIAN_FRONTEND="noninteractive" \
-    curl -sL https://deb.nodesource.com/setup_5.x | bash - \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update \
     && apt-get install -y --fix-missing \
         nodejs \

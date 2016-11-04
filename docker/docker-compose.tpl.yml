@@ -2,6 +2,15 @@ version: '2'
 
 services:
 
+  debian-jessie:
+    build:
+      context: ./docker/container/debian/debian-jessie/
+      dockerfile: Dockerfile
+    container_name: debian-jessie
+    image: flower7c3/debian:jessie
+    restart: 'no'
+    tty: true
+
   nginx-proxy:
     container_name: proxy
     environment:
@@ -24,7 +33,7 @@ services:
 
   mysql55:
     build:
-      context: ./container/mysql55/
+      context: ./docker/container/mysql/mysql55/
       dockerfile: Dockerfile
     container_name: mysql55
     environment:
@@ -34,7 +43,7 @@ services:
       PHP70_IP: ${PHP70_DOCKER_NETWORK_IP}
     expose:
       - "3306"
-    image: flower7c3:mysql55
+    image: flower7c3/mysql:55
     networks:
       webserver:
         ipv4_address: ${MYSQL55_DOCKER_NETWORK_IP}
@@ -48,18 +57,15 @@ services:
       - "${VOLUME_ROOT}mysql/mysql55/data/:/var/lib/mysql"
 
   elastic1:
-#    build:
-#      context: ./container/php70/
-#      dockerfile: Dockerfile
     container_name: elastic1
     dns: ${DNS_IP}
     image: elasticsearch:1
     networks:
       webserver:
-        ipv4_address: 192.168.33.121
+        ipv4_address: ${ELASTICSEARCH1_DOCKER_NETWORK_IP}
     ports:
       - "${ELASTICSEARCH1_BRIDGED_PORT}:9200"
-#    restart: always
+    restart: 'no'
     tty: true
     volumes:
       - "~/.ssh/:/root/.ssh/"
@@ -68,37 +74,19 @@ services:
       - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/tools/"
 
-#  elastic2:
-#    container_name: elastic2
-#    dns: ${DNS_IP}
-#    image: elasticsearch:5
-#    networks:
-#      webserver:
-#        ipv4_address: 192.168.33.122
-#    ports:
-#      - "${ELASTICSEARCH2_BRIDGED_PORT}:9200"
-#    tty: true
-#    volumes:
-#      - "~/.ssh/:/root/.ssh/"
-#      - "${VOLUME_ROOT}esdata/:/usr/share/elasticsearch/data/"
-#      - "${VOLUME_PROJECTS}:/var/www/projects/"
-#      - "${VOLUME_DOMAINS}:/var/www/domains/"
-#      - "${VOLUME_TOOLS}:/var/www/tools/"
-
   php55:
     build:
-      context: ./container/php55/
+      context: ./docker/container/php/php55/
       dockerfile: Dockerfile
     container_name: php55
     dns: ${DNS_IP}
     environment:
       VIRTUAL_HOST: ${PHP55_VIRTUAL_HOSTS}
       XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
-    image: flower7c3:php55
+    image: flower7c3/php:55
     links:
       - mysql55
       - elastic1
-#      - elastic2
     networks:
       webserver:
         ipv4_address: ${PHP55_DOCKER_NETWORK_IP}
@@ -112,18 +100,17 @@ services:
 
   php56:
     build:
-      context: ./container/php56/
+      context: ./docker/container/php/php56/
       dockerfile: Dockerfile
     container_name: php56
     environment:
       VIRTUAL_HOST: ${PHP56_VIRTUAL_HOSTS}
       XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
     dns: ${DNS_IP}
-    image: flower7c3:php56
+    image: flower7c3/php:56
     links:
       - mysql55
       - elastic1
-#      - elastic2
     networks:
       webserver:
         ipv4_address: ${PHP56_DOCKER_NETWORK_IP}
@@ -137,18 +124,17 @@ services:
 
   php70:
     build:
-      context: ./container/php70/
+      context: ./docker/container/php/php70/
       dockerfile: Dockerfile
     container_name: php70
     dns: ${DNS_IP}
     environment:
       VIRTUAL_HOST: ${PHP70_VIRTUAL_HOSTS}
       XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
-    image: flower7c3:php70
+    image: flower7c3/php:70
     links:
       - mysql55
       - elastic1
-#      - elastic2
     networks:
       webserver:
         ipv4_address: ${PHP70_DOCKER_NETWORK_IP}
@@ -162,17 +148,17 @@ services:
 
   yarn:
     build:
-      context: ./container/yarn/
+      context: ./docker/container/yarn/
       dockerfile: Dockerfile
     container_name: yarn
     dns: ${DNS_IP}
     ports:
       - "${YARN_BRIDGED_PORT}:8080"
-    image: flower7c3:yarn
+    image: flower7c3/yarn
     networks:
       webserver:
         ipv4_address: ${YARN_DOCKER_NETWORK_IP}
-#    restart: always
+    restart: 'no'
     tty: true
     volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"
@@ -181,17 +167,17 @@ services:
 
   node4:
     build:
-      context: ./container/node4/
+      context: ./docker/container/node/node4/
       dockerfile: Dockerfile
     container_name: node4
     dns: ${DNS_IP}
     ports:
       - "${NODE4_BRIDGED_PORT}:8080"
-    image: flower7c3:node4
+    image: flower7c3/node:4
     networks:
       webserver:
         ipv4_address: ${NODE4_DOCKER_NETWORK_IP}
-#    restart: always
+    restart: 'no'
     tty: true
     volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"
@@ -200,17 +186,36 @@ services:
 
   node5:
     build:
-      context: ./container/node5/
+      context: ./docker/container/node/node5/
       dockerfile: Dockerfile
     container_name: node5
     dns: ${DNS_IP}
     ports:
       - "${NODE5_BRIDGED_PORT}:8080"
-    image: flower7c3:node5
+    image: flower7c3/node:5
     networks:
       webserver:
         ipv4_address: ${NODE5_DOCKER_NETWORK_IP}
-#    restart: always
+    restart: 'no'
+    tty: true
+    volumes:
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/tools/"
+
+  node6:
+    build:
+      context: ./docker/container/node/node6/
+      dockerfile: Dockerfile
+    container_name: node6
+    dns: ${DNS_IP}
+    ports:
+      - "${NODE6_BRIDGED_PORT}:8080"
+    image: flower7c3/node:6
+    networks:
+      webserver:
+        ipv4_address: ${NODE6_DOCKER_NETWORK_IP}
+    restart: 'no'
     tty: true
     volumes:
       - "${VOLUME_PROJECTS}:/var/www/projects/"

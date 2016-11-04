@@ -1,11 +1,4 @@
-FROM debian:jessie
-
-### install base
-RUN DEBIAN_FRONTEND="noninteractive" \
-    && apt-get update \
-    && apt-get install -y --fix-missing \
-        vim mc wget curl git \
-        libpng-dev
+FROM flower7c3/debian:jessie
 
 ### install node and yarn
 RUN DEBIAN_FRONTEND="noninteractive" \
