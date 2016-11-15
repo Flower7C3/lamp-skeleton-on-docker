@@ -1,35 +1,40 @@
-# Usage
+Dockerized XAMP
+=========================== 
 
 
-## Prepare docker containers
+## 1. Usage
+
+
+### 1.1. Prepare docker containers
 
 1. Clone this repo to *~/www/* directory.
-2. Build `docker-compose.yml` file with `./configure.sh` script.
+2. Build *docker-compose.yml* file with `./configure.sh` script.
 3. Enjoy *docker-compose* in *./* directory.
 
 
-## Configure project domains
+### 1.2. Configure domains
 
 Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./tools/symlinks.sh* script.
 
 
-## Create domains
+### 1.3. Create domains
 
-On _proxy_ container run *symlinks.sh* script: `docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"`
-
+On *proxy* container run *symlinks.sh* script: `docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"`
 
 
 ---
 
-# Docker config review
 
 
-## Network
-
-Network _webserver_ with gatweway _192.168.33.254_
+## 2. Docker config review
 
 
-## Containers
+### 2.1. Network
+
+Network *webserver* with gatweway *192.168.33.254*
+
+
+### 2.2. Containers
 
 Available WWW containers:
 
@@ -47,13 +52,24 @@ Available node containers:
 
 * node4 - Node 4 and npm with exposed *8080* port to *9004* port at [127.0.0.1](http://127.0.0.1:9004) (stopped by default)
 * node5 - Node 5 and npm with exposed *8080* port to *9005* port at [127.0.0.1](http://127.0.0.1:9005) (stopped by default)
-* node5 - Node 6 and npm with exposed *8080* port to *9006* port at [127.0.0.1](http://127.0.0.1:9006) (stopped by default)
+* node6 - Node 6 and npm with exposed *8080* port to *9006* port at [127.0.0.1](http://127.0.0.1:9006) (stopped by default)
 * yarn - Node 6 and yarn with exposed *8080* port to *9011* port at [127.0.0.1](http://127.0.0.1:9011) (stopped by default)
 
-## Connection
+### 2.3. Connection
 
 1. Master domain in *~/www/domains/default/* with address [127.0.0.1](http://127.0.0.1)
 2. Other as *~/www/domains/\*.127.0.0.1.xip.io/* with address as symlink name, eg. [test.php55.127.0.0.1.xip.io](http://test.php55.127.0.0.1.xip.io)
 3. MySQL on *127.0.0.1:3306*
+
+
+---
+
+
+
+## 3. Known errors
+
+
+3.1. xdebug not works. Check Your IP (command `ifconfig` on host) and compare it to *xdebug.remote_host* PHP env (command `php -i | grep xdebug.remote_host` on docker container). If is not same just rebuild *docker-compose.yml* file with `./configure.sh` script and run `docker-compose up -d`.
+
 
 ---
