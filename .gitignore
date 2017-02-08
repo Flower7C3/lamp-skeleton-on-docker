@@ -24,3 +24,7 @@ mysql/*
 
 esdata/*
 !esdata/Icon\r
+
+!bin/Icon\r
+bin/private/
+

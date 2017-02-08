@@ -365,7 +365,7 @@
                                 <div class="modal-body">
                                     <ul type="1">
                                         <li>Create project or clone project GIT repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
-                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>./tools/symlinks.sh"</code> command which will create proper domains.</li>
+                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>./bin/symlinks.sh"</code> command which will create proper domains.</li>
                                         <li>Create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
                                             <pre><?= file_get_contents('tpl/DEFAULT.ini') ?></pre>
                                         </li>

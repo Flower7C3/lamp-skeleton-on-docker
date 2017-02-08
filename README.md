@@ -14,12 +14,12 @@ Dockerized XAMP
 
 ### 1.2. Configure domains
 
-Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./tools/symlinks.sh* script.
+Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./bin/symlinks.sh* script.
 
 
 ### 1.3. Create domains
 
-On *proxy* container run *symlinks.sh* script: `docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"`
+On *proxy* container run *symlinks.sh* script: `docker exec -t proxy sh -c "exec /var/www/bin/symlinks.sh"`
 
 
 ---
