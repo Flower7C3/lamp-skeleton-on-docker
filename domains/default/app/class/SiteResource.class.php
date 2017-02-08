@@ -41,23 +41,21 @@ class SiteResource extends Resource
         ],
     ];
 
-    function __construct($key, $url)
+    public function __construct($key, $url)
     {
-        if (empty($url)) {
-            return null;
+        if (!empty($url)) {
+            if (isset($this->type[$key])) {
+                $temp = $this->type[$key];
+                $this->setTitle($temp['title'])
+                    ->setName($temp['name'])
+                    ->setIcons($temp['icons']);
+            } else {
+                $this->setTitle($key)
+                    ->setName($key)
+                    ->addIcon('globe');
+            }
+            $this->setUrl($url);
         }
-        if (isset($this->type[$key])) {
-            $temp = $this->type[$key];
-            $this->setTitle($temp['title'])
-                ->setName($temp['name'])
-                ->setIcons($temp['icons']);
-
-        } else {
-            $this->setTitle($key)
-                ->setName($key)
-                ->addIcon('globe');
-        }
-        $this->setUrl($url);
     }
 
 }

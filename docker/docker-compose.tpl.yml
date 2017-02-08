@@ -6,7 +6,7 @@ services:
     build:
       context: ./docker/container/debian/debian-jessie/
       dockerfile: Dockerfile
-    container_name: debian-jessie
+    container_name: debian
     image: flower7c3/debian:jessie
     restart: 'no'
     tty: true
@@ -14,7 +14,7 @@ services:
   nginx-proxy:
     container_name: proxy
     environment:
-      - DEFAULT_HOST=${PROXY_DEFAULT_HOST}
+      DEFAULT_HOST: "${PROXY_DEFAULT_HOST}"
     image: jwilder/nginx-proxy
     networks:
       webserver:
@@ -37,13 +37,14 @@ services:
       dockerfile: Dockerfile
     container_name: mysql55
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL55_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: "${MYSQL55_ROOT_PASSWORD}"
       PHP55_IP: ${PHP55_DOCKER_NETWORK_IP}
       PHP56_IP: ${PHP56_DOCKER_NETWORK_IP}
       PHP70_IP: ${PHP70_DOCKER_NETWORK_IP}
+      #PHP71_IP: ${PHP71_DOCKER_NETWORK_IP}
     expose:
       - "3306"
-    image: flower7c3/mysql:55
+    image: flower7c3/mysql:5.5
     networks:
       webserver:
         ipv4_address: ${MYSQL55_DOCKER_NETWORK_IP}
@@ -56,9 +57,35 @@ services:
       - "${VOLUME_TOOLS}:/var/www/tools/"
       - "${VOLUME_ROOT}mysql/mysql55/data/:/var/lib/mysql"
 
+  mysql56:
+    build:
+      context: ./docker/container/mysql/mysql56/
+      dockerfile: Dockerfile
+    container_name: mysql56
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL56_ROOT_PASSWORD}"
+      PHP55_IP: ${PHP55_DOCKER_NETWORK_IP}
+      PHP56_IP: ${PHP56_DOCKER_NETWORK_IP}
+      PHP70_IP: ${PHP70_DOCKER_NETWORK_IP}
+      #PHP71_IP: ${PHP71_DOCKER_NETWORK_IP}
+    expose:
+      - "3306"
+    image: flower7c3/mysql:5.6
+    networks:
+      webserver:
+        ipv4_address: ${MYSQL56_DOCKER_NETWORK_IP}
+    ports:
+      - "${MYSQL56_BRIDGED_PORT}:3306"
+    restart: always
+    volumes:
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/tools/"
+      - "${VOLUME_ROOT}mysql/mysql56/data/:/var/lib/mysql"
+
   elastic1:
     container_name: elastic1
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     image: elasticsearch:1
     networks:
       webserver:
@@ -79,13 +106,14 @@ services:
       context: ./docker/container/php/php55/
       dockerfile: Dockerfile
     container_name: php55
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     environment:
-      VIRTUAL_HOST: ${PHP55_VIRTUAL_HOSTS}
-      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
-    image: flower7c3/php:55
+      VIRTUAL_HOST: "${PHP55_VIRTUAL_HOSTS}"
+      XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+    image: flower7c3/php:5.5-apache
     links:
       - mysql55
+      - mysql56
       - elastic1
     networks:
       webserver:
@@ -104,12 +132,13 @@ services:
       dockerfile: Dockerfile
     container_name: php56
     environment:
-      VIRTUAL_HOST: ${PHP56_VIRTUAL_HOSTS}
-      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
-    dns: ${DNS_IP}
-    image: flower7c3/php:56
+      VIRTUAL_HOST: "${PHP56_VIRTUAL_HOSTS}"
+      XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+    dns: "${DNS_IP}"
+    image: flower7c3/php:5.6-apache
     links:
       - mysql55
+      - mysql56
       - elastic1
     networks:
       webserver:
@@ -127,13 +156,14 @@ services:
       context: ./docker/container/php/php70/
       dockerfile: Dockerfile
     container_name: php70
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     environment:
-      VIRTUAL_HOST: ${PHP70_VIRTUAL_HOSTS}
-      XDEBUG_CONFIG: remote_host=${HOST_IPS[1]}
-    image: flower7c3/php:70
+      VIRTUAL_HOST: "${PHP70_VIRTUAL_HOSTS}"
+      XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+    image: flower7c3/php:7.0-apache
     links:
       - mysql55
+      - mysql56
       - elastic1
     networks:
       webserver:
@@ -146,12 +176,37 @@ services:
       - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/tools/"
 
+  # php71:
+  #   build:
+  #     context: ./docker/container/php/php71/
+  #     dockerfile: Dockerfile
+  #   container_name: php71
+  #   dns: "${DNS_IP}"
+  #   environment:
+  #     VIRTUAL_HOST: "${PHP71_VIRTUAL_HOSTS}"
+  #     XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+  #   image: flower7c3/php:7.1-apache
+  #   links:
+  #     - mysql55
+  #     - mysql56
+  #     - elastic1
+  #   networks:
+  #     webserver:
+  #       ipv4_address: ${PHP71_DOCKER_NETWORK_IP}
+  #   restart: always
+  #   volumes:
+  #     - "~/.ssh/:/root/.ssh/"
+  #     - "${VOLUME_WWW_INDEX}:/var/www/html/"
+  #     - "${VOLUME_PROJECTS}:/var/www/projects/"
+  #     - "${VOLUME_DOMAINS}:/var/www/domains/"
+  #     - "${VOLUME_TOOLS}:/var/www/tools/"
+
   yarn:
     build:
       context: ./docker/container/yarn/
       dockerfile: Dockerfile
     container_name: yarn
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     ports:
       - "${YARN_BRIDGED_PORT}:8080"
     image: flower7c3/yarn
@@ -170,7 +225,7 @@ services:
       context: ./docker/container/node/node4/
       dockerfile: Dockerfile
     container_name: node4
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     ports:
       - "${NODE4_BRIDGED_PORT}:8080"
     image: flower7c3/node:4
@@ -189,7 +244,7 @@ services:
       context: ./docker/container/node/node5/
       dockerfile: Dockerfile
     container_name: node5
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     ports:
       - "${NODE5_BRIDGED_PORT}:8080"
     image: flower7c3/node:5
@@ -208,7 +263,7 @@ services:
       context: ./docker/container/node/node6/
       dockerfile: Dockerfile
     container_name: node6
-    dns: ${DNS_IP}
+    dns: "${DNS_IP}"
     ports:
       - "${NODE6_BRIDGED_PORT}:8080"
     image: flower7c3/node:6

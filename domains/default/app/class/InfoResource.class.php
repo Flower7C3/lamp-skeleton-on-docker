@@ -12,7 +12,7 @@ class InfoResource extends Resource
 
     ];
 
-    function __construct($key, $val)
+    public function __construct($key, $val)
     {
         if (isset($this->types[$key])) {
             $temp = $this->types[$key];

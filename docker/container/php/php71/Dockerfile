@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7.1-apache
 
 ### install base programs
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
@@ -26,33 +26,31 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 RUN yes | pecl install intl xdebug \
     && locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
     && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip \
-    && docker-php-ext-enable intl mysqli pdo_mysql opcache zip \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-enable intl mysqli pdo_mysql opcache zip
+#    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+#    && docker-php-ext-install -j$(nproc) gd
 
 
 
-# install java for assetic
-#RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
-#    && apt-get install -y --fix-missing \
-#        default-jre
-
-### install imagick
-#RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
-#    && apt-get install --fix-missing -y libmagickwand-dev imagemagick \
-#    && yes | pecl install imagick
-#RUN echo "extension=imagick.so" >> /usr/local/etc/php/php.ini
+### install ldap
+RUN apt-get install -y --fix-missing \
+        libldb-dev \
+        libldap2-dev \
+    && ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
+    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
+    && docker-php-ext-install ldap \
+    && docker-php-ext-enable ldap
 
 
 
 ### configure APACHE
-RUN a2enmod vhost_alias
-RUN a2enmod rewrite
-ADD ./apache.conf /etc/apache2/sites-available/000-default.conf
-RUN ln -sf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+#RUN a2enmod vhost_alias
+#RUN a2enmod rewrite
+#ADD ./apache.conf /etc/apache2/sites-available/000-default.conf
+#RUN ln -sf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
 ### configure PHP
-ADD ./php.ini /usr/local/etc/php/php.ini
-ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+#ADD ./php.ini /usr/local/etc/php/php.ini
+#ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 WORKDIR /var/www/domains

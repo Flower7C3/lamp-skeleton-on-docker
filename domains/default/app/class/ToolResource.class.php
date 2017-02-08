@@ -40,7 +40,7 @@ class ToolResource extends Resource
             'name' => 'info',
         ],
         'phpinfo' => [
-            'icons' => ['code'],
+            'icons' => ['microchip'],
             'title' => 'PHP info',
             'name' => 'phpinfo',
         ],
@@ -61,39 +61,36 @@ class ToolResource extends Resource
         ],
     ];
 
-    function __construct($key, $url)
+    public function __construct($key, $url)
     {
-        if (empty($url)) {
-            return null;
-        }
-        if (isset($this->types[$key])) {
-            $temp = $this->types[$key];
-            $this->setTitle($temp['title'])
-                ->setName($temp['name'])
-                ->setIcons($temp['icons']);
+        if (!empty($url)) {
+            if (isset($this->types[$key])) {
+                $temp = $this->types[$key];
+                $this->setTitle($temp['title'])
+                    ->setName($temp['name'])
+                    ->setIcons($temp['icons']);
 
-        } else {
-            $this->setTitle($key)
-                ->setName($key);
+            } else {
+                $this->setTitle($key)
+                    ->setName($key);
+            }
+            if (preg_match("'event'", $key)) {
+                $this->addIcon('calendar');
+                $this->setName(preg_replace("'event'", '', $this->getName()));
+            }
+            if (preg_match("'^(PL|EN)'", $key)) {
+                $this->addIcon('flag');
+            }
+            if (preg_match("'pay'", $key)) {
+                $this->addIcon('money');
+            }
+            if (preg_match("'skin'", $key)) {
+                $this->addIcon('eye');
+            }
+            if (preg_match("'link'", $key)) {
+                $this->addIcon('link');
+            }
+            $this->setUrl($url);
         }
-
-        if (preg_match("'event'", $key)) {
-            $this->addIcon('calendar');
-            $this->setName(preg_replace("'event'", '', $this->getName()));
-        }
-        if (preg_match("'^(PL|EN)'", $key)) {
-            $this->addIcon('flag');
-        }
-        if (preg_match("'pay'", $key)) {
-            $this->addIcon('money');
-        }
-        if (preg_match("'skin'", $key)) {
-            $this->addIcon('eye');
-        }
-        if (preg_match("'link'", $key)) {
-            $this->addIcon('link');
-        }
-
-        $this->setUrl($url);
     }
 }

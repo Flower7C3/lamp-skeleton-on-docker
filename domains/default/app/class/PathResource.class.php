@@ -32,23 +32,20 @@ class PathResource extends Resource
         ],
     ];
 
-    function __construct($key, $path)
+    public function __construct($key, $path)
     {
         if (empty($path)) {
-            return null;
+            if (isset($this->types[$key])) {
+                $temp = $this->types[$key];
+                $this->setTitle($temp['title'])
+                    ->setName($temp['name'])
+                    ->setIcons($temp['icons']);
+            } else {
+                $this->setTitle($key)
+                    ->setName($key);
+            }
+            $this->setPath($path);
         }
-        if (isset($this->types[$key])) {
-            $temp = $this->types[$key];
-            $this->setTitle($temp['title'])
-                ->setName($temp['name'])
-                ->setIcons($temp['icons']);
-
-        } else {
-            $this->setTitle($key)
-                ->setName($key);
-        }
-
-        $this->setPath($path);
     }
 
     /**

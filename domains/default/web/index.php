@@ -1,4 +1,4 @@
-<?php require_once 'app/application.php'; ?>
+<?php require_once '../app/application.php'; ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -106,7 +106,7 @@
                         <? endforeach; ?>
                         <li>
                             <a data-toggle="modal" href="#howto" title="Howto info">
-                                <span class="fa fa-fw fa-info-circle"></span>
+                                <span class="fa fa-fw fa-question-circle"></span>
                                 <span class="hidden-sm hidden-md hidden-lg">Howto</span>
                             </a>
                         </li>
@@ -148,7 +148,7 @@
                 <div class="col-sm-12">
                     <? if (empty($DOMAINS)): ?>
                         <div class="alert alert-info">
-                            <em class="fa fa-fw fa-info-circle"></em>
+                            <em class="fa fa-fw fa-question-circle"></em>
                             No directories configured. Create one with suffix <code><?= stripslashes($suffix) ?></code> in <code><?= $dir ?></code> on virtual machine and add it to hosts file in local machine.
                         </div>
                     <? else: ?>
@@ -364,8 +364,8 @@
                                 </div>
                                 <div class="modal-body">
                                     <ul type="1">
-                                        <li>Create project or clone project git repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
-                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>docker exec -t proxy sh -c "exec /var/www/tools/symlinks.sh"</code> command which will create docker .</li>
+                                        <li>Create project or clone project GIT repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
+                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>./tools/symlinks.sh"</code> command which will create proper domains.</li>
                                         <li>Create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
                                             <pre><?= file_get_contents('tpl/DEFAULT.ini') ?></pre>
                                         </li>

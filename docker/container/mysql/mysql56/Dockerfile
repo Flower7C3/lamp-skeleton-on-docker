@@ -1,4 +1,4 @@
-FROM mysql:5.5
+FROM mysql:5.6
 
 ADD ./my.cnf /etc/mysql/my.cnf
 ADD ./run.sh /root/run.sh

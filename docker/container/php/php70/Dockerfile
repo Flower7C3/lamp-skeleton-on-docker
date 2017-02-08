@@ -25,21 +25,21 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 # possible php mods: bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mcrypt mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip
 RUN yes | pecl install intl xdebug \
     && locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
-    && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip \
-    && docker-php-ext-enable intl mysqli pdo_mysql opcache zip
+    && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip gd \
+    && docker-php-ext-enable intl mysqli pdo_mysql opcache zip gd
 #    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 #    && docker-php-ext-install -j$(nproc) gd
 
 
 
 ### install ldap
-RUN apt-get install -y --fix-missing \
-        libldb-dev \
-        libldap2-dev \
-    && ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
-    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
-    && docker-php-ext-install ldap \
-    && docker-php-ext-enable ldap
+#RUN apt-get install -y --fix-missing \
+#        libldb-dev \
+#        libldap2-dev \
+#    && ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
+#    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
+#    && docker-php-ext-install ldap \
+#    && docker-php-ext-enable ldap
 
 
 

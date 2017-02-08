@@ -138,5 +138,7 @@ div.links {
   100% {
     transform: scale(0.3);
     background-color: white; } }
+.datepicker .datepicker-days {
+  display: block; }
 
 /*# sourceMappingURL=main.css.map */

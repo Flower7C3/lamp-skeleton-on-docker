@@ -12,9 +12,21 @@ require 'config/config.php';
 /**
  * versions
  */
-$bootstrapVersion = '3.3.4';
-$fontawesomeVersion = '4.6.3';
-$jqueryVersion = '2.1.4';
+$bootstrapVersion = '3.3.7';
+$fontawesomeVersion = '4.7.0';
+$jqueryVersion = '3.1.1';
+
+/**
+ * post config
+ */
+$suffix = '\.local';
+if (isset($VHOSTS[$currentVhost]) && isset($_VHOSTS_META[$currentVhost])) {
+    if (isset($_VHOSTS_META[$currentVhost]->suffix)) {
+        $suffix = '.' . $_VHOSTS_META[$currentVhost]->suffix;
+    } else {
+        $suffix = '.' . $currentVhost;
+    }
+}
 
 /**
  * read directories
@@ -34,7 +46,7 @@ while (false !== ($filename = readdir($dh))) {
         preg_match("'" . $suffix . "$'", $filename)
         && (
             (!isset($_GET['project'])) ||
-            (isset($_GET['project']) && stripslashes($_GET['project'] . $suffix) == $filename)
+            (isset($_GET['project']) && stripslashes($_GET['project'] . $suffix) === $filename)
         )
     ) {
 
@@ -74,10 +86,10 @@ while (false !== ($filename = readdir($dh))) {
         # meta data
         $data['name'] = $externalDomain;
         $data['code'] = basename(dirname($realPath));
-        $data['client_id'] = preg_match("'^([0-9]{3})_(.*)$'", $data['code']) ? preg_replace("'^([0-9]{3})_(.*)$'", "$1.", $data['code']) : null;
-        $data['job_id'] = preg_match("'^([0-9]{3})_([0-9]{3})_(.*)$'", $data['code']) ? preg_replace("'^([0-9]{3})_([0-9]{3})_(.*)$'", "$1.$2", $data['code']) : null;
+        $data['client_id'] = preg_match("'^(\d{3})_(.*)$'", $data['code']) ? preg_replace("'^(\d{3})_(.*)$'", "$1.", $data['code']) : null;
+        $data['job_id'] = preg_match("'^(\d{3})_(\d{3})_(.*)$'", $data['code']) ? preg_replace("'^(\d{3})_(\d{3})_(.*)$'", "$1.$2", $data['code']) : null;
         $data['date'] = new \DateTime('@' . $mtime);
-        $data['current'] = ($data['date']->diff(new \DateTime())->days > 7) ? false : true;
+        $data['current'] = !($data['date']->diff(new \DateTime())->days > 7);
 
         # local and live URLs
         $data['url'] = 'http://' . $localDomain . $baseurl;

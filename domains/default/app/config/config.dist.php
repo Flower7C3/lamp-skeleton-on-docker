@@ -1,15 +1,19 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', true);
+date_default_timezone_set('UTC');
 
 \Locale::setDefault('pl_PL');
 
-$suffix = '\.' . str_replace('.', '\.', $_SERVER['SERVER_NAME']);
+/****************************************************************/
 $isXip = preg_match("'.xip.io$'", $_SERVER['SERVER_NAME']);
-$dir = "/vagrant/domains/";
+$dir = '/var/www/domains/';
 $itemsPerPage = 10;
+$currentVhost = $_SERVER['HTTP_HOST'];
+/****************************************************************/
 $_CLIENTS_META = [
 ];
+/****************************************************************/
 $_TAGS_META = [
     'evolution' => (object)[
         'icons' => ['plus-square-o'],
@@ -80,8 +84,42 @@ $filesAsTags = [
     'wp-config.php' => ['Wordpress', 'PHP'],
     'app/appKernel.php' => ['Symfony', 'PHP'],
 ];
-$VHOSTS = [];
-
+/****************************************************************/
+$_VHOSTS_META = [
+    '127.0.0.1' => (object)[
+        'icons' => ['server'],
+        'name' => 'local@docker',
+        'suffix' => '127.0.0.1.xip.io',
+    ],
+    'php55.127.0.0.1.xip.io' => (object)[
+        'icons' => ['paper-plane'],
+        'name' => 'PHP55-local@docker',
+        'suffix' => 'php55.127.0.0.1.xip.io',
+    ],
+    'php56.127.0.0.1.xip.io' => (object)[
+        'icons' => ['plane'],
+        'name' => 'PHP56-local@docker',
+        'suffix' => 'php56.127.0.0.1.xip.io',
+    ],
+    'php70.127.0.0.1.xip.io' => (object)[
+        'icons' => ['rocket'],
+        'name' => 'PHP70-local@docker',
+        'suffix' => 'php70.127.0.0.1.xip.io',
+    ],
+//    'php71.127.0.0.1.xip.io' => (object)[
+//        'icons' => ['rocket'],
+//        'name' => 'PHP71-local@docker',
+//        'suffix' => 'php71.127.0.0.1.xip.io',
+//    ],
+];
+$VHOSTS = [
+    '127.0.0.1' => 'http://127.0.0.1',
+    'php55.127.0.0.1.xip.io' => 'http://php55.127.0.0.1.xip.io',
+    'php56.127.0.0.1.xip.io' => 'http://php56.127.0.0.1.xip.io',
+    'php70.127.0.0.1.xip.io' => 'http://php70.127.0.0.1.xip.io',
+//    'php71.127.0.0.1.xip.io' => 'http://php71.127.0.0.1.xip.io',
+];
+/****************************************************************/
 $TOOLS_MENU = array(
     'pma' => new ToolResource('pma', 'http://' . $_SERVER['SERVER_NAME'] . '/phpmyadmin/'),
     'phpinfo' => new ToolResource('phpinfo', 'http://' . $_SERVER['SERVER_NAME'] . '/info.php'),
