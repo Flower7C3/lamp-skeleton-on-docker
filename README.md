@@ -14,12 +14,13 @@ Dockerized XAMP
 
 ### 1.2. Configure domains
 
-Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./bin/symlinks.sh* script.
+Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./bin/create-domains.sh* script.
 
 
 ### 1.3. Create domains
 
-On *proxy* container run *symlinks.sh* script: `docker exec -t proxy sh -c "exec /var/www/bin/symlinks.sh"`
+* run *create-domains.sh* script on *proxy* container: `docker exec -t proxy sh -c "exec /var/www/bin/create-domains.sh"`
+* create proper domain directory in in *./domains/* directory
 
 
 ---
@@ -39,13 +40,14 @@ Network *webserver* with gatweway *192.168.33.254*
 Available WWW containers:
 
 * proxy - nginx proxy host with exposed *80* port to *80* port at [127.0.0.1](http://127.0.0.1:80); in docker network server IP is *192.168.33.254*
-* php55 - Apache server with PHP 5.5.x available on localhost via proxy container
-* php56 - Apache server with PHP 5.6.x available on localhost via proxy container
-* php70 - Apache server with PHP 7.0.x available on localhost via proxy container
+* php55 - Apache server with PHP 5.5.x available on localhost via proxy container (domains *\*.php55.127.0.0.1.xip.io* from *./domains/\*.php55.127.0.0.1.xip.io* path)
+* php56 - Apache server with PHP 5.6.x available on localhost via proxy container (domains *\*.php56.127.0.0.1.xip.io* from *./domains/\*.php56.127.0.0.1.xip.io* path)
+* php70 - Apache server with PHP 7.0.x available on localhost via proxy container (domains *\*.php70.127.0.0.1.xip.io* from *./domains/\*.php70.127.0.0.1.xip.io* path)
 
 Available database containers:
 
-* mysql55 - mySQL server with exposed *3306* port to *3306* port at 127.0.0.1; in docker network server IP is *192.168.33.155*
+* mysql55 - mySQL server with exposed *3306* port to *3306* port and *3355* port and  at 127.0.0.1; in docker network server IP is *192.168.33.155*
+* mysql56 - mySQL server with exposed *3306* port to *3356* port at 127.0.0.1; in docker network server IP is *192.168.33.156*
 * elastic1 - ElasticSearch version 1 with exposed *9200* port to *9201* port at 127.0.0.1 (stopped by default)
 
 Available node containers:
@@ -58,8 +60,8 @@ Available node containers:
 ### 2.3. Connection
 
 1. Master domain in *~/www/domains/default/* with address [127.0.0.1](http://127.0.0.1)
-2. Other as *~/www/domains/\*.127.0.0.1.xip.io/* with address as symlink name, eg. [test.php55.127.0.0.1.xip.io](http://test.php55.127.0.0.1.xip.io)
-3. MySQL on *127.0.0.1:3306*
+2. Other as *~/www/domains/\*.127.0.0.1.xip.io/* with address as symlink name, eg. [test.php70.127.0.0.1.xip.io](http://test.php70.127.0.0.1.xip.io)
+3. MySQL 5.5 on *127.0.0.1:3306* (MySQL 5.6 on *127.0.0.1:3356_)
 
 
 ---

@@ -1,0 +1,9 @@
+
+  debian-jessie:
+    build:
+      context: ./docker/container/debian/debian-jessie/
+      dockerfile: Dockerfile
+    container_name: debian
+    image: flower7c3/debian:jessie
+    restart: 'no'
+    tty: true

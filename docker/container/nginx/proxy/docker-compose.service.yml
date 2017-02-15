@@ -1,0 +1,19 @@
+
+  nginx-proxy:
+    container_name: proxy
+    environment:
+      DEFAULT_HOST: "${PROXY_DEFAULT_HOST}"
+    image: jwilder/nginx-proxy
+    networks:
+      webserver:
+        ipv4_address: ${PROXY_DOCKER_NETWORK_IP}
+    ports:
+      - "${PROXY_HTTP0_BRIDGED_PORT}:80"
+      - "${PROXY_HTTPS_BRIDGED_PORT}:443"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "${VOLUME_SSH}:/root/.ssh/"
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/bin/"

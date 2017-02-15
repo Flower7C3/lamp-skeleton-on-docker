@@ -1,0 +1,19 @@
+
+  node6:
+    build:
+      context: ./docker/container/node/node6/
+      dockerfile: Dockerfile
+    container_name: node6
+    dns: "${DNS_IP}"
+    ports:
+      - "${NODE6_BRIDGED_PORT}:8080"
+    image: flower7c3/node:6
+    networks:
+      webserver:
+        ipv4_address: ${NODE6_DOCKER_NETWORK_IP}
+    restart: 'no'
+    tty: true
+    volumes:
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/bin/"
