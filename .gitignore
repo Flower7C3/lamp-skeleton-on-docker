@@ -2,6 +2,8 @@
 
 .DS_Store
 
+config/_config.local.sh
+
 certs/*.crt
 certs/*.csr
 certs/*.key

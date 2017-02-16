@@ -1,5 +1,20 @@
+osType="unknown"
+if [ "$(uname)" == "Darwin" ]; then
+    osType="osx"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    osType="linux"
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    osType="windows"
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    osType="windows"
+fi
+
 # networking
-HOST_IPS=(127.0.0.1 $(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
+if [[ "$osType" == "windows" ]]; then
+    HOST_IPS=(127.0.0.1)
+else
+    HOST_IPS=(127.0.0.1 $(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
+fi
 
 DNS_IP='8.8.8.8'
 

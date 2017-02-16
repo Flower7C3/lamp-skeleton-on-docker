@@ -5,64 +5,63 @@ Dockerized XAMP
 ## 1. Usage
 
 
-### 1.1. Prepare docker containers
+### 1.1. Prepare containers
 
 1. Clone this repo to *~/www/* directory.
-2. Build *docker-compose.yml* file with `./configure.sh` script.
-3. Enjoy *docker-compose* in *./* directory.
+2. Write custom configuration in *./docker/_config.local.sh* file.
+3. Build *docker-compose.yml* file with `./configure.sh` script (on Windows with GIT bash).
+4. Enjoy *docker-compose* in *./* directory.
 
 
-### 1.2. Configure domains
+### 1.2. Configure domains with symlink
 
-Just create and edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./bin/create-domains.sh* script.
+> This option works only on Unix (Linux/OS X)
+
+1. Create or edit *./domains/_hosts.list* file. See *./domains/_hosts.list.dist* file for example or *./bin/create-domains.sh* script.
+2. Run *create-domains.sh* script on *proxy* container: `docker exec -t proxy sh -c "exec /var/www/bin/create-domains.sh"`
 
 
-### 1.3. Create domains
+### 1.3. Configure domains without symlink
 
-* run *create-domains.sh* script on *proxy* container: `docker exec -t proxy sh -c "exec /var/www/bin/create-domains.sh"`
-* create proper domain directory in in *./domains/* directory
+Just create proper domain directory in *./domains/* directory. See below the domains in **[WWW containers](#www-containers)** section.
 
+
+### 1.4. Connection
+
+* Some containers has exposed ports to localhost. See below in **[Config review](#2-config-review)** section for more info.
+* In applications instead docker container IP use container name as host address.
+* You can connect to container command line with docker: `docker exec -ti $CONTAINER_NAME bash`
 
 ---
 
 
 
-## 2. Docker config review
+## 2. Config review
 
 
-### 2.1. Network
+### WWW containers
 
-Network *webserver* with gatweway *192.168.33.254*
+* proxy - nginx proxy host with exposed *80* port to *80* port at 127.0.0.1, it has configured master domain in `./domains/default/web/` with address [127.0.0.1](http://127.0.0.1)
+* php55 - Apache server with PHP 5.5.x available on localhost via proxy container (domains __*.php55.127.0.0.1.xip.io__ from `./domains/*.php55.127.0.0.1.xip.io/web/` path)
+* php56 - Apache server with PHP 5.6.x available on localhost via proxy container (domains __*.php56.127.0.0.1.xip.io__ from `./domains/*.php56.127.0.0.1.xip.io/web/` path)
+* php70 - Apache server with PHP 7.0.x available on localhost via proxy container (domains __*.php70.127.0.0.1.xip.io__ from `./domains/*.php70.127.0.0.1.xip.io/web/` path)
+
+All Apache servers will have 192.168.33.1 IP in `$_SERVER['REMOTE_ADDR']` variable.
 
 
-### 2.2. Containers
+### Database containers
 
-Available WWW containers:
+* mysql55 - mySQL server with exposed *3306* port to *3306* port and *3355* port at 127.0.0.1
+* mysql56 - mySQL server with exposed *3306* port to *3356* port at 127.0.0.1
+* elastic1 - ElasticSearch version 1 with exposed *9200* port to *9201* port at 127.0.0.1
 
-* proxy - nginx proxy host with exposed *80* port to *80* port at [127.0.0.1](http://127.0.0.1:80); in docker network server IP is *192.168.33.254*
-* php55 - Apache server with PHP 5.5.x available on localhost via proxy container (domains *\*.php55.127.0.0.1.xip.io* from *./domains/\*.php55.127.0.0.1.xip.io* path)
-* php56 - Apache server with PHP 5.6.x available on localhost via proxy container (domains *\*.php56.127.0.0.1.xip.io* from *./domains/\*.php56.127.0.0.1.xip.io* path)
-* php70 - Apache server with PHP 7.0.x available on localhost via proxy container (domains *\*.php70.127.0.0.1.xip.io* from *./domains/\*.php70.127.0.0.1.xip.io* path)
 
-Available database containers:
+### node containers
 
-* mysql55 - mySQL server with exposed *3306* port to *3306* port and *3355* port and  at 127.0.0.1; in docker network server IP is *192.168.33.155*
-* mysql56 - mySQL server with exposed *3306* port to *3356* port at 127.0.0.1; in docker network server IP is *192.168.33.156*
-* elastic1 - ElasticSearch version 1 with exposed *9200* port to *9201* port at 127.0.0.1 (stopped by default)
-
-Available node containers:
-
-* node4 - Node 4 and npm with exposed *8080* port to *9004* port at [127.0.0.1](http://127.0.0.1:9004) (stopped by default)
-* node5 - Node 5 and npm with exposed *8080* port to *9005* port at [127.0.0.1](http://127.0.0.1:9005) (stopped by default)
-* node6 - Node 6 and npm with exposed *8080* port to *9006* port at [127.0.0.1](http://127.0.0.1:9006) (stopped by default)
-* yarn - Node 6 and yarn with exposed *8080* port to *9011* port at [127.0.0.1](http://127.0.0.1:9011) (stopped by default)
-
-### 2.3. Connection
-
-1. Master domain in *~/www/domains/default/* with address [127.0.0.1](http://127.0.0.1)
-2. Other as *~/www/domains/\*.127.0.0.1.xip.io/* with address as symlink name, eg. [test.php70.127.0.0.1.xip.io](http://test.php70.127.0.0.1.xip.io)
-3. MySQL 5.5 on *127.0.0.1:3306* (MySQL 5.6 on *127.0.0.1:3356_)
-
+* node4 - Node 4 and npm with exposed *8080* port to *9004* port at [127.0.0.1](http://127.0.0.1:9004)
+* node5 - Node 5 and npm with exposed *8080* port to *9005* port at [127.0.0.1](http://127.0.0.1:9005)
+* node6 - Node 6 and npm with exposed *8080* port to *9006* port at [127.0.0.1](http://127.0.0.1:9006)
+* yarn - Node 6 and yarn with exposed *8080* port to *9011* port at [127.0.0.1](http://127.0.0.1:9011)
 
 ---
 
