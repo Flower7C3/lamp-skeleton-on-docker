@@ -6,7 +6,7 @@
     container_name: php56
     environment:
       VIRTUAL_HOST: "${PHP56_VIRTUAL_HOSTS}"
-      XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+      XDEBUG_CONFIG: "remote_host=${XDEBUG_HOST}"
     dns: "${DNS_IP}"
     image: flower7c3/php:5.6-apache
     networks:

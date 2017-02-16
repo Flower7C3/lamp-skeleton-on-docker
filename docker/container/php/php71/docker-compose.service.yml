@@ -7,7 +7,7 @@
     dns: "${DNS_IP}"
     environment:
       VIRTUAL_HOST: "${PHP71_VIRTUAL_HOSTS}"
-      XDEBUG_CONFIG: "remote_host=${HOST_IPS[1]}"
+      XDEBUG_CONFIG: "remote_host=${XDEBUG_HOST}"
     image: flower7c3/php:7.1-apache
     networks:
       webserver:

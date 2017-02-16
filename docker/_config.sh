@@ -12,8 +12,10 @@ fi
 # networking
 if [[ "$osType" == "windows" ]]; then
     HOST_IPS=(127.0.0.1)
+    XDEBUG_HOST=127.0.0.1
 else
     HOST_IPS=(127.0.0.1 $(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
+    XDEBUG_HOST=${HOST_IPS[1]}
 fi
 
 DNS_IP='8.8.8.8'
