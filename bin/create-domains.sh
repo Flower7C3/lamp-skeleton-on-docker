@@ -6,7 +6,8 @@ cd ../domains/
 projectsDir='../projects/'
 domainsFile='_hosts.list'
 proxyLocal='127.0.0.1.xip.io'
-proxyShared=$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')'.xip.io'
+proxyIP=$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
+proxyShared=$proxyIP'.xip.io'
 
 echo "Cleanup ${proxyLocal}"
 find *${proxyLocal} -maxdepth 1  -type l -delete
@@ -15,6 +16,7 @@ echo "Cleanup ${proxyShared}"
 find *${proxyShared} -maxdepth 1  -type l -delete
 
 echo "Proxy default"
+ln -sf default ${proxyIP}
 ln -sf default ${proxyShared}
 
 echo "New domains:"

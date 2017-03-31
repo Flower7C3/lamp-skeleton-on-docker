@@ -1,0 +1,18 @@
+  yarn:
+    build:
+      context: ./docker/container/yarn/
+      dockerfile: Dockerfile
+    container_name: yarn
+    dns: "${DNS_IP}"
+    ports:
+      - "${YARN_BRIDGED_PORT}:8080"
+    image: flower7c3/yarn
+    networks:
+      webserver:
+        ipv4_address: ${YARN_DOCKER_NETWORK_IP}
+    restart: 'no'
+    tty: true
+    volumes:
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/bin/"

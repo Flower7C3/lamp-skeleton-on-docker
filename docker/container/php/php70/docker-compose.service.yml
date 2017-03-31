@@ -1,0 +1,21 @@
+
+  php70:
+    build:
+      context: ./docker/container/php/php70/
+      dockerfile: Dockerfile
+    container_name: php70
+    dns: "${DNS_IP}"
+    environment:
+      VIRTUAL_HOST: "${PHP70_VIRTUAL_HOSTS}"
+      XDEBUG_CONFIG: "remote_host=${XDEBUG_HOST}"
+    image: flower7c3/php:7.0-apache
+    networks:
+      webserver:
+        ipv4_address: ${PHP70_DOCKER_NETWORK_IP}
+    restart: always
+    volumes:
+      - "${VOLUME_SSH}:/root/.ssh/"
+      - "${VOLUME_WWW_INDEX}:/var/www/html/"
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/bin/"

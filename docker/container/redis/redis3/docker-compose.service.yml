@@ -1,0 +1,20 @@
+
+
+  redis3:
+    container_name: redis3
+    dns: "${DNS_IP}"
+    image: redis:3
+    networks:
+      webserver:
+        ipv4_address: ${REDIS3_DOCKER_NETWORK_IP}
+    ports:
+      - "${REDIS3_BRIDGED_PORT}:6379"
+    restart: 'no'
+    tty: true
+    volumes:
+      - "${VOLUME_SSH}:/root/.ssh/"
+      - "${VOLUME_DATABASE}redis/redis3/:/data/"
+      - "${VOLUME_PROJECTS}:/var/www/projects/"
+      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_TOOLS}:/var/www/bin/"
+

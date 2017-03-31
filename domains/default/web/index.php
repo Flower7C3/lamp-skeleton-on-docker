@@ -34,7 +34,7 @@
                         <ul class="nav navbar-nav">
                             <? if (!empty($VHOSTS)): ?>
                                 <li class="dropdown">
-                                    <a href="javascript://undefined" title="vhosts list" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <a href="javascript://undefined" title="vhosts list" class="navbar-brand dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <em class="fa fa-fw fa-cloud"></em>
                                         <span class="text hidden-xs"><?= $title ?></span>
                                         <span class="text hidden-sm hidden-md hidden-lg">vHosts</span>

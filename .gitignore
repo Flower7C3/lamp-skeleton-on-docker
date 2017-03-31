@@ -2,6 +2,8 @@
 
 .DS_Store
 
+config/_config.local.sh
+
 certs/*.crt
 certs/*.csr
 certs/*.key
@@ -19,11 +21,16 @@ domains/domains.list
 projects/*
 !projects/Icon\r
 
-mysql/*
-!mysql/Icon\r
+!database/Icon\r
 
-esdata/*
-!esdata/Icon\r
+database/mysql/*
+!database/mysql/Icon\r
+
+database/esdata/*
+!database/esdata/Icon\r
+
+database/redis/*
+!database/redis/Icon\r
 
 !bin/Icon\r
 bin/private/
