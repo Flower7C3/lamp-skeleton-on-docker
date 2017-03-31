@@ -20,4 +20,4 @@
       - "${VOLUME_PROJECTS}:/var/www/projects/"
       - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"
-      - "${VOLUME_ROOT}mysql/mysql55/data/:/var/lib/mysql"
+      - "${VOLUME_DATABASE}mysql/mysql55/data/:/var/lib/mysql"
