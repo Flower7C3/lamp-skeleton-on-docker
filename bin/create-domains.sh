@@ -6,18 +6,23 @@ cd ../domains/
 projectsDir='../projects/'
 domainsFile='_hosts.list'
 proxyLocal='127.0.0.1.xip.io'
-proxyIP=$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
-proxyShared=$proxyIP'.xip.io'
+proxyIPs=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
 
 echo "Cleanup ${proxyLocal}"
 find *${proxyLocal} -maxdepth 1  -type l -delete
 
-echo "Cleanup ${proxyShared}"
-find *${proxyShared} -maxdepth 1  -type l -delete
+echo "Cleanup shared proxies"
+for proxyIP in "${proxyIPs[@]}"; do
+	proxyShared=$proxyIP'.xip.io'
+	find *${proxyShared} -maxdepth 1  -type l -delete
+done
 
 echo "Proxy default"
-ln -sf default ${proxyIP}
-ln -sf default ${proxyShared}
+for proxyIP in "${proxyIPs[@]}"; do
+	proxyShared=$proxyIP'.xip.io'
+	ln -sf default ${proxyIP}
+	ln -sf default ${proxyShared}
+done
 
 echo "New domains:"
 cat $domainsFile |                      
@@ -40,9 +45,12 @@ do
 		ln -sf ${projectDirPath} ${domainLocal}
 
 		if [[ "${row[shared]}" == "true" ]]; then
-	   		echo "- ${domain} @ ${container} via ${proxyShared}"
-			domainShared=${domain}'.'${tld}'.'${container}'.'${proxyShared}
-			ln -sf ${projectDirPath} ${domainShared}
+			for proxyIP in "${proxyIPs[@]}"; do
+				proxyShared=$proxyIP'.xip.io'
+		   		echo "- ${domain} @ ${container} via ${proxyShared}"
+				domainShared=${domain}'.'${tld}'.'${container}'.'${proxyShared}
+				ln -sf ${projectDirPath} ${domainShared}
+			done
 		fi
 
 	fi
