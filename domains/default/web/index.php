@@ -359,14 +359,23 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title">
                                         <em class="fa fa-fw fa-info-circle"></em>
-                                        Howto setup domain
+                                        How-to setup domain
                                     </h4>
                                 </div>
                                 <div class="modal-body">
                                     <ul type="1">
                                         <li>Create project or clone project GIT repo in <code>./projects/</code> directory, eg: <code>./projects/{PROJECT_ID}/www/</code>.</li>
-                                        <li>Add project to <code>./domains/_hosts.list</code> file and execute <code>./bin/symlinks.sh"</code> command which will create proper domains.</li>
-                                        <li>Create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
+                                        <li>Add project to <code>./domains/_hosts.list</code> file as BASH array. Available params:
+                                            <ul>
+                                                <li><b>domain</b> - main domain name, note that <em>tld</em>, PHP version and IP will be appended automatically</li>
+                                                <li><b>dir</b> - relative path to <code>./projects/</code> directory</li>
+                                                <li><b>php</b> - PHP version (see available Docker containers)</li>
+                                                <li><b>tld</b> - custom tld</li>
+                                                <li><b>shared</b> - true or none; if true, domain will be accessible from local network</li>
+                                            </ul>
+                                        </li>
+                                        <li>Execute <code>./bin/create-domains.sh"</code> command which will create proper domains as symlinks to defined directories.</li>
+                                        <li>If You want to see some detailed info in listing just create <code>DESCRIPTION</code> file in <code>./projects/{PROJECT_ID}/</code> directory with config options (buttons links):
                                             <pre><?= file_get_contents('tpl/DEFAULT.ini') ?></pre>
                                         </li>
                                         <? if (!$isXip): ?>
@@ -394,7 +403,10 @@
                                             <em class="fa fa-info-circle"></em>
                                             If You have problems with <a href="http://xip.io">xip.io</a> (or You are not connected to the internet) please copy following code and paste into <code>/etc/hosts</code> file at Your local machine.
                                         </div>
-                                        <textarea class="form-control" style="width: 100%;height: 400px; resize: none" readonly><?= $currentVhost . "\t" . implode(" ", $HOSTS) ?></textarea>
+                                        <h5>
+                                            This is automatically generated list of all domains provided on this Docker instance:
+                                        </h5>
+                                        <textarea class="form-control" style="width: 100%;height: 400px; resize: none" readonly><?= $currentVhost . "\t" . implode(' ', $HOSTS) ?></textarea>
                                     </div>
                                 </div>
                             </div>
