@@ -5,6 +5,8 @@
       dockerfile: Dockerfile
     container_name: node6
     dns: "${DNS_IP}"
+    expose:
+      - 8080
     ports:
       - "${NODE6_BRIDGED_PORT}:8080"
     image: flower7c3/node:6

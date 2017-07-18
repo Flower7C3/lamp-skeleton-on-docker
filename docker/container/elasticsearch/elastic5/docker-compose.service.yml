@@ -1,19 +1,19 @@
 
 
-  elastic1:
-    container_name: elastic1
+  elastic5:
+    container_name: elastic5
     dns: "${DNS_IP}"
-    image: elasticsearch:1
+    image: elasticsearch:5
     networks:
       webserver:
-        ipv4_address: ${ELASTICSEARCH1_DOCKER_NETWORK_IP}
+        ipv4_address: ${ELASTICSEARCH5_DOCKER_NETWORK_IP}
     ports:
-      - "${ELASTICSEARCH1_BRIDGED_PORT}:9200"
+      - "${ELASTICSEARCH5_BRIDGED_PORT}:9200"
     restart: 'no'
     tty: true
     volumes:
       - "${VOLUME_SSH}:/root/.ssh/"
-      - "${VOLUME_DATABASE}elasticsearch/elasticsearch1/:/usr/share/elasticsearch/data/"
+      - "${VOLUME_DATABASE}elasticsearch/elasticsearch5/:/usr/share/elasticsearch/data/"
       - "${VOLUME_PROJECTS}:/var/www/projects/"
       - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"

@@ -2,7 +2,7 @@
 
 .DS_Store
 
-config/_config.local.sh
+docker/_config.local.sh
 
 certs/*.crt
 certs/*.csr
@@ -26,8 +26,11 @@ projects/*
 database/mysql/*
 !database/mysql/Icon\r
 
-database/esdata/*
-!database/esdata/Icon\r
+database/elasticsearch/*
+!database/elasticsearch/Icon\r
+
+database/mongo/*
+!database/mongo/Icon\r
 
 database/redis/*
 !database/redis/Icon\r

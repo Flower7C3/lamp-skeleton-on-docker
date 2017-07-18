@@ -9,10 +9,9 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
         zip python
 
 ### install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === $(curl https://composer.github.io/installer.sig)) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/bin  --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \
+    && curl -sS https://getcomposer.org/installer | tee composer-setup.php | sha384sum -c composer-setup.php.sig \
+    && php composer-setup.php -- --install-dir=/bin --filename=composer
 
 ### install phpunit
 RUN wget https://phar.phpunit.de/phpunit.phar \
@@ -30,7 +29,10 @@ RUN yes | pecl install intl xdebug \
 #    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 #    && docker-php-ext-install -j$(nproc) gd
 
-
+RUN pecl install redis \
+  && pecl install mongodb \
+  && pecl install mongo \
+  && docker-php-ext-enable redis mongo mongodb
 
 ### install ldap
 #RUN apt-get install -y --fix-missing \

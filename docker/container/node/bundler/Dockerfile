@@ -2,16 +2,16 @@ FROM flower7c3/debian:jessie
 
 ### install node and yarn
 RUN DEBIAN_FRONTEND="noninteractive" \
-    curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    curl -sL https://deb.nodesource.com/setup_4.x | bash - \
     && apt-get update \
     && apt-get install -y --fix-missing \
-    	ruby ruby-dev \
         nodejs \
-        build-essential
+        build-essential \
+        ruby bundler fontforge \
+        sass fontcustom
 
 ### install gulp
 RUN DEBIAN_FRONTEND="noninteractive" \
-    gem install compass \
-    npm install --global gulp gulp-cli node-gyp marked compass
+    npm install --global gulp gulp-cli node-gyp marked
 
 WORKDIR /var/www/domains

@@ -9,10 +9,9 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
         zip python
 
 ### install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === $(curl https://composer.github.io/installer.sig)) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/bin  --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \
+    && curl -sS https://getcomposer.org/installer | tee composer-setup.php | sha384sum -c composer-setup.php.sig \
+    && php composer-setup.php -- --install-dir=/bin --filename=composer
 
 ### install phpunit
 RUN wget https://phar.phpunit.de/phpunit.phar \
@@ -23,14 +22,17 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 
 ### install PHP modules
 # possible php mods: bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mcrypt mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip
-RUN yes | pecl install intl xdebug \
-    && locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
-    && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip \
-    && docker-php-ext-enable intl mysqli pdo_mysql opcache zip \
+RUN apt-get update \
+  && apt-get install -y \
+    imagemagick libmagickwand-dev libmagickcore-dev \
+    libmcrypt-dev libcurl4-gnutls-dev libicu-dev libxslt-dev libssl-dev
+RUN yes | pecl install \
+        intl xdebug redis mongodb mongo \
+    && docker-php-ext-enable redis mongo mongodb
+RUN locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
+    && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip curl bcmath mcrypt iconv exif json session xmlrpc xsl \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
-
-
 
 # install java for assetic
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update \

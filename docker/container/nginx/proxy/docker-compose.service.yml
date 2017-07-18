@@ -3,6 +3,8 @@
     container_name: proxy
     environment:
       DEFAULT_HOST: "${PROXY_DEFAULT_HOST}"
+    expose:
+      - 80
     image: jwilder/nginx-proxy
     networks:
       webserver:

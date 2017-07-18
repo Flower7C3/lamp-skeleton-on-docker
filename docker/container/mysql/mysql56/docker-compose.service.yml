@@ -7,7 +7,7 @@
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL56_ROOT_PASSWORD}"
     expose:
-      - "3306"
+      - 3306
     image: flower7c3/mysql:5.6
     networks:
       webserver:
