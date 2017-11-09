@@ -106,18 +106,24 @@ $_VHOSTS_META = [
         'name' => 'PHP70-local@docker',
         'suffix' => 'php70.127.0.0.1.xip.io',
     ],
-//    'php71.127.0.0.1.xip.io' => (object)[
-//        'icons' => ['rocket'],
-//        'name' => 'PHP71-local@docker',
-//        'suffix' => 'php71.127.0.0.1.xip.io',
-//    ],
+   'php71.127.0.0.1.xip.io' => (object)[
+       'icons' => ['rocket'],
+       'name' => 'PHP71-local@docker',
+       'suffix' => 'php71.127.0.0.1.xip.io',
+   ],
+   'php72.127.0.0.1.xip.io' => (object)[
+       'icons' => ['rocket'],
+       'name' => 'PHP72-local@docker',
+       'suffix' => 'php72.127.0.0.1.xip.io',
+   ],
 ];
 $VHOSTS = [
     '127.0.0.1' => 'http://127.0.0.1',
     'php55.127.0.0.1.xip.io' => 'http://php55.127.0.0.1.xip.io',
     'php56.127.0.0.1.xip.io' => 'http://php56.127.0.0.1.xip.io',
     'php70.127.0.0.1.xip.io' => 'http://php70.127.0.0.1.xip.io',
-//    'php71.127.0.0.1.xip.io' => 'http://php71.127.0.0.1.xip.io',
+    'php71.127.0.0.1.xip.io' => 'http://php71.127.0.0.1.xip.io',
+    'php72.127.0.0.1.xip.io' => 'http://php72.127.0.0.1.xip.io',
 ];
 /****************************************************************/
 $TOOLS_MENU = array(

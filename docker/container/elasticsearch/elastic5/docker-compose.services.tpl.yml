@@ -1,5 +1,3 @@
-
-
   elastic5:
     container_name: elastic5
     dns: "${DNS_IP}"
@@ -13,8 +11,10 @@
     tty: true
     volumes:
       - "${VOLUME_SSH}:/root/.ssh/"
-      - "${VOLUME_DATABASE}elasticsearch/elasticsearch5/:/usr/share/elasticsearch/data/"
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "elasticsearch5-sync:/usr/share/elasticsearch/data/:nocopy"
+      # - "${VOLUME_DATABASES}elasticsearch/elasticsearch5/:/usr/share/elasticsearch/data/"
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"
-

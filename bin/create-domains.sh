@@ -1,31 +1,32 @@
 #!/usr/bin/env bash
 
 cd `dirname ${BASH_SOURCE}`
-cd ../domains/
 
-projectsDir='../projects/'
-domainsFile='_hosts.list'
-proxyLocal='127.0.0.1.xip.io'
-proxyIPs=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
+domains_dir='../domains/'
+projects_dir='../projects/'
+domains_file='_hosts.list'
+proxy_ocal='127.0.0.1.xip.io'
+proxy_ips=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
 
-echo "Cleanup ${proxyLocal}"
-find *${proxyLocal} -maxdepth 1  -type l -delete
+cd $domains_dir
+echo "Cleanup ${proxy_ocal}"
+find *${proxy_ocal} -maxdepth 1  -type l -delete
 
 echo "Cleanup shared proxies"
-for proxyIP in "${proxyIPs[@]}"; do
-	proxyShared=$proxyIP'.xip.io'
-	find *${proxyShared} -maxdepth 1  -type l -delete
+for proxy_IP in "${proxy_ips[@]}"; do
+	proxy_shared=$proxy_IP'.xip.io'
+	find *${proxy_shared} -maxdepth 1  -type l -delete
 done
 
 echo "Proxy default"
-for proxyIP in "${proxyIPs[@]}"; do
-	proxyShared=$proxyIP'.xip.io'
-	ln -sf default ${proxyIP}
-	ln -sf default ${proxyShared}
+for proxy_IP in "${proxy_ips[@]}"; do
+	proxy_shared=$proxy_IP'.xip.io'
+	ln -sf default ${proxy_IP}
+	ln -sf default ${proxy_shared}
 done
 
 echo "New domains:"
-cat $domainsFile |                      
+cat $domains_file |                      
 while read -r line;
 do
 	if [[ $line == \(* ]];
@@ -38,18 +39,18 @@ do
    		container='php'${row[php]}
 		git=${row[git]}
 
-		projectDirPath=${projectsDir}${row[dir]}
+		project_dir_path=${projects_dir}${row[dir]}
 
-   		echo "- ${domain} @ ${container} via ${proxyLocal}"
-		domainLocal=${domain}'.'${tld}'.'${container}'.'${proxyLocal}
-		ln -sf ${projectDirPath} ${domainLocal}
+   		echo "- ${domain} @ ${container} via ${proxy_ocal}"
+		domain_local=${domain}'.'${tld}'.'${container}'.'${proxy_ocal}
+		ln -sf ${project_dir_path} ${domain_local}
 
 		if [[ "${row[shared]}" == "true" ]]; then
-			for proxyIP in "${proxyIPs[@]}"; do
-				proxyShared=$proxyIP'.xip.io'
-		   		echo "- ${domain} @ ${container} via ${proxyShared}"
-				domainShared=${domain}'.'${tld}'.'${container}'.'${proxyShared}
-				ln -sf ${projectDirPath} ${domainShared}
+			for proxy_IP in "${proxy_ips[@]}"; do
+				proxy_shared=$proxy_IP'.xip.io'
+		   		echo "- ${domain} @ ${container} via ${proxy_shared}"
+				domain_shared=${domain}'.'${tld}'.'${container}'.'${proxy_shared}
+				ln -sf ${project_dir_path} ${domain_shared}
 			done
 		fi
 

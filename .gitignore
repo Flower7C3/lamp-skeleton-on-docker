@@ -1,6 +1,9 @@
 .idea
-
 .DS_Store
+.docker-sync
+
+backup/*
+!certs/Icon\r
 
 docker/_config.local.sh
 
@@ -11,6 +14,7 @@ certs/*.key.org
 !certs/Icon\r
 
 docker-compose.yml
+docker-sync.yml
 
 domains/*
 domains/domains.list

@@ -1,4 +1,3 @@
-
   mysql55:
     build:
       context: ./docker/container/mysql/mysql55/
@@ -17,7 +16,11 @@
       - "${MYSQL55_BRIDGED_PORT}:3306"
     restart: always
     volumes:
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_SSH}:/root/.ssh/"
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "mysql55-sync:/var/lib/mysql/:nocopy"
+      # - "${VOLUME_DATABASES}mysql/mysql55/data/:/var/lib/mysql"
       - "${VOLUME_TOOLS}:/var/www/bin/"
-      - "${VOLUME_DATABASE}mysql/mysql55/data/:/var/lib/mysql"

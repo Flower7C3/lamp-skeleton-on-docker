@@ -1,0 +1,4 @@
+  mysql56-sync:
+    sync_strategy: '${DOCKER_SYNC_STRATEGY}'
+    src: '${VOLUME_DATABASES}mysql/mysql56/data/'
+    host_disk_mount_mode: 'cached'

@@ -66,22 +66,27 @@ while (false !== ($filename = readdir($dh))) {
         # domain and paths
         $localDomain = $filename;
         $externalDomain = preg_replace("'" . $suffix . "'", '', $filename);
-        $symlinkPath = $dir . $filename;
-        $realPath = realpath($dir . (is_link($symlinkPath) ? readlink($symlinkPath) : $symlinkPath));
-        if (file_exists($symlinkPath . '/web/app_dev.php')) {
-            $baseurl = '/app_dev.php';
-        } elseif (file_exists($symlinkPath . '/web/wp-config.php')) {
-            $baseurl = ':81';
-        } elseif (file_exists($symlinkPath . '/build/production/')) {
-            $baseurl = ':82';
-        } elseif (file_exists($symlinkPath . '/web/')) {
-            $baseurl = '/';
+        $itemPath = $dir . $filename;
+        if (is_link($itemPath) === true) {
+            if (file_exists($itemPath) === false) {
+                continue;
+            } else {
+                $realPath = realpath($dir . readlink($itemPath));
+            }
         } else {
-            $baseurl = ':81';
+            $realPath = realpath($dir . $itemPath);
+        }
+
+        if (file_exists($realPath . '/web/app_dev.php')) {
+            $baseURL = '/app_dev.php';
+        } elseif (file_exists($realPath . '/web/')) {
+            $baseURL = '/';
+        } else {
+            $baseURL = '/';
         }
 
         # last modification time from repo
-        $mtime = file_exists($symlinkPath . '/.git/') ? filemtime($symlinkPath . '/.git/') : (file_exists($symlinkPath) ? filemtime($symlinkPath) : 0);
+        $mtime = file_exists($realPath . '/.git/') ? filemtime($realPath . '/.git/') : (file_exists($realPath) ? filemtime($realPath) : 0);
 
         # meta data
         $data['name'] = $externalDomain;
@@ -92,11 +97,11 @@ while (false !== ($filename = readdir($dh))) {
         $data['current'] = !($data['date']->diff(new \DateTime())->days > 7);
 
         # local and live URLs
-        $data['url'] = 'http://' . $localDomain . $baseurl;
+        $data['url'] = 'http://' . $localDomain . $baseURL;
 
         # repo URL
-        if (file_exists($symlinkPath . '/.git/config')) {
-            $gitConfig = parse_ini_file($symlinkPath . '/.git/config', true);
+        if (file_exists($realPath . '/.git/config')) {
+            $gitConfig = parse_ini_file($realPath . '/.git/config', true);
             if (!empty($gitConfig['remote origin']['url'])) {
                 $data['path'][] = new PathResource('repo', $gitConfig['remote origin']['url']);
                 $data['repoUrl'] = preg_replace("'^git@(.*):(.*)\.git$'", "https://$1/$2", $gitConfig['remote origin']['url']);
@@ -110,8 +115,8 @@ while (false !== ($filename = readdir($dh))) {
 
         # data from description file
         $descriptionFiles = [
-            $symlinkPath . '/DESCRIPTION',
-            $symlinkPath . '/DESCRIPTION.ini',
+            $itemPath . '/DESCRIPTION',
+            $itemPath . '/DESCRIPTION.ini',
             dirname($realPath) . '/DESCRIPTION',
             dirname($realPath) . '/DESCRIPTION.ini',
             dirname($realPath) . '/DESCRIPTION-' . $externalDomain,
@@ -189,7 +194,7 @@ while (false !== ($filename = readdir($dh))) {
         }
 
         foreach ($filesAsTags as $file => $tags) {
-            if (file_exists($symlinkPath . '/' . $file)) {
+            if (file_exists($realPath . '/' . $file)) {
                 $data['tags'] = array_merge($data['tags'], $tags);
             }
         }
@@ -201,7 +206,6 @@ while (false !== ($filename = readdir($dh))) {
         }
 
         $data['path'][] = new PathResource('real', $realPath);
-        $data['path'][] = new PathResource('link', $symlinkPath);
 
         $CLIENTS[$data['client_id']] = $data['client_id'];
 

@@ -1,0 +1,4 @@
+  elasticsearch1-sync:
+    sync_strategy: '${DOCKER_SYNC_STRATEGY}'
+    src: '${VOLUME_DATABASES}elasticsearch/elasticsearch1/'
+    host_disk_mount_mode: 'cached'

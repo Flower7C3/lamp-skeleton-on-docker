@@ -6,7 +6,8 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
         libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev libicu-dev \
         locales \
         vim mc wget curl git \
-        zip python
+        zip python \
+        libsasl2-dev
 
 ### install composer
 RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \

@@ -20,19 +20,18 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 
 
 
+RUN pecl install \
+    intl xdebug redis mongodb mongo \
+  && docker-php-ext-enable xdebug redis mongo mongodb
+
+RUN locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8
+
 ### install PHP modules
 # possible php mods: bcmath bz2 calendar ctype curl dba dom enchant exif fileinfo filter ftp gd gettext gmp hash iconv imap interbase intl json ldap mbstring mcrypt mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets spl standard sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip
-RUN yes | pecl install intl xdebug \
-    && locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
-    && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip gd \
+RUN docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip gd \
     && docker-php-ext-enable intl mysqli pdo_mysql opcache zip gd
 #    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 #    && docker-php-ext-install -j$(nproc) gd
-
-RUN pecl install redis \
-  && pecl install mongodb \
-  && pecl install mongo \
-  && docker-php-ext-enable redis mongo mongodb
 
 ### install ldap
 #RUN apt-get install -y --fix-missing \

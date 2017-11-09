@@ -1,5 +1,3 @@
-
-
   redis3:
     container_name: redis3
     dns: "${DNS_IP}"
@@ -13,8 +11,10 @@
     tty: true
     volumes:
       - "${VOLUME_SSH}:/root/.ssh/"
-      - "${VOLUME_DATABASE}redis/redis3/:/data/"
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "redis3-sync:/data/:nocopy"
+      # - "${VOLUME_DATABASES}redis/redis3/:/data/"
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"
-

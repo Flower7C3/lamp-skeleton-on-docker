@@ -1,4 +1,3 @@
-
   bundler:
     build:
       context: ./docker/container/node/bundler/
@@ -14,6 +13,8 @@
     restart: 'no'
     tty: true
     volumes:
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"

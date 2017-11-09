@@ -1,0 +1,6 @@
+
+volumes:
+  domains-sync:
+    external: true
+  projects-sync:
+    external: true

@@ -1,0 +1,4 @@
+  mongo3-sync:
+    sync_strategy: '${DOCKER_SYNC_STRATEGY}'
+    src: '${VOLUME_DATABASES}mongo/mongo3/data/'
+    host_disk_mount_mode: 'cached'

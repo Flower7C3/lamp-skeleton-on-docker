@@ -1,4 +1,3 @@
-
   debian-jessie:
     build:
       context: ./docker/container/debian/debian-jessie/

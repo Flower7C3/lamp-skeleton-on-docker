@@ -1,4 +1,3 @@
-
   mongo3:
     build:
       context: ./docker/container/mongo/mongo3/
@@ -17,8 +16,11 @@
       - "${MONGO3_BRIDGED_PORT}:27017"
     restart: always
     volumes:
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - "${VOLUME_SSH}:/root/.ssh/"
+      - "mongo3-sync:/data/db/:nocopy"
+      # - "${VOLUME_DATABASES}mongo/mongo3/data/:/data/db/"
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"
-      - "${VOLUME_DATABASE}mongo/mongo3/data/:/data/db"
-

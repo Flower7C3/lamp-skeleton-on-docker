@@ -1,4 +1,3 @@
-
   nginx-proxy:
     container_name: proxy
     environment:
@@ -14,8 +13,10 @@
       - "${PROXY_HTTPS_BRIDGED_PORT}:443"
     restart: always
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
       - "${VOLUME_SSH}:/root/.ssh/"
-      - "${VOLUME_PROJECTS}:/var/www/projects/"
-      - "${VOLUME_DOMAINS}:/var/www/domains/"
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "projects-sync:/var/www/projects/:nocopy"
+      - "domains-sync:/var/www/domains/:nocopy"
+      # - "${VOLUME_PROJECTS}:/var/www/projects/"
+      # - "${VOLUME_DOMAINS}:/var/www/domains/"
       - "${VOLUME_TOOLS}:/var/www/bin/"

@@ -1,7 +1,6 @@
 version: '2'
 
 networks:
-
   webserver:
     driver: bridge
     driver_opts:
@@ -12,5 +11,3 @@ networks:
       config:
       - subnet: 192.168.33.0/24
         gateway: 192.168.33.254
-
-services:

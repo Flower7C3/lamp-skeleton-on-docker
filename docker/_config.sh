@@ -13,7 +13,15 @@ fi
 if [[ "$osType" == "windows" ]]; then
     HOST_IPS=(127.0.0.1)
     XDEBUG_HOST=127.0.0.1
+    DOCKER_SYNC_STRATEGY="unison"
 else
+    if [[ "$osType" == "osx" ]]; then
+        DOCKER_SYNC_STRATEGY="native_osx"
+    elif [[ "$osType" == "linux" ]]; then
+        DOCKER_SYNC_STRATEGY="native_linux"
+    else
+        DOCKER_SYNC_STRATEGY="unison"
+    fi
     HOST_IPS=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
     XDEBUG_HOST=${HOST_IPS[1]}
 fi
@@ -49,7 +57,7 @@ VOLUME_ROOT='~/www/'
 VOLUME_WWW_INDEX=${VOLUME_ROOT}'domains/default/'
 VOLUME_PROJECTS=${VOLUME_ROOT}'projects/'
 VOLUME_DOMAINS=${VOLUME_ROOT}'domains/'
-VOLUME_DATABASE=${VOLUME_ROOT}'database/'
+VOLUME_DATABASES=${VOLUME_ROOT}'database/'
 VOLUME_TOOLS=${VOLUME_ROOT}'bin/'
 
 
@@ -91,7 +99,7 @@ PROXY_DEFAULT_HOST=php70.127.0.0.1.xip.io
 PHP55_VIRTUAL_HOST=('php55.127.0.0.1.xip.io')
 PHP56_VIRTUAL_HOST=('php56.127.0.0.1.xip.io')
 PHP70_VIRTUAL_HOST=('php70.127.0.0.1.xip.io')
-#PHP71_VIRTUAL_HOST=('php71.127.0.0.1.xip.io')
+PHP71_VIRTUAL_HOST=('php71.127.0.0.1.xip.io')
 for ip in "${HOST_IPS[@]}"
 do
 	PHP55_VIRTUAL_HOST+=('*.php55.'$ip'.xip.io')
@@ -103,4 +111,3 @@ PHP55_VIRTUAL_HOSTS=$(IFS=, eval 'echo "${PHP55_VIRTUAL_HOST[*]}"')
 PHP56_VIRTUAL_HOSTS=$(IFS=, eval 'echo "${PHP56_VIRTUAL_HOST[*]}"')
 PHP70_VIRTUAL_HOSTS=$(IFS=, eval 'echo "${PHP70_VIRTUAL_HOST[*]}"')
 PHP71_VIRTUAL_HOSTS=$(IFS=, eval 'echo "${PHP71_VIRTUAL_HOST[*]}"')
-
