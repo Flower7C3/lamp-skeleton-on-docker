@@ -9,14 +9,21 @@
       XDEBUG_CONFIG: "remote_host=${XDEBUG_HOST}"
     image: flower7c3/php:7.1-apache
     networks:
-      webserver:
-        ipv4_address: ${PHP71_DOCKER_NETWORK_IP}
+      ${NETWORK_NAME}:
+        # ipv4_address: ${PHP71_DOCKER_NETWORK_IP}
     restart: always
     volumes:
-      - "${VOLUME_SSH}:/root/.ssh/"
-      - "${VOLUME_WWW_INDEX}:/var/www/html/"
-      - "projects-sync:/var/www/projects/:nocopy"
-      - "domains-sync:/var/www/domains/:nocopy"
-      # - "${VOLUME_PROJECTS}:/var/www/projects/"
-      # - "${VOLUME_DOMAINS}:/var/www/domains/"
-      - "${VOLUME_TOOLS}:/var/www/bin/"
+      - type: bind
+        source: "${VOLUME_SSH_SOURCE}"
+        target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_TOOLS_LOCAL_PATH}"
+        target: "${VOLUME_TOOLS_TARGET}"
+      - type: "${VOLUME_PROJECTS_TYPE}"
+        source: "${VOLUME_PROJECTS_SOURCE}"
+        target: "${VOLUME_PROJECTS_TARGET}"
+        ${VOLUME_PROJECTS_OPTIONS}
+      - type: "${VOLUME_DOMAINS_TYPE}"
+        source: "${VOLUME_DOMAINS_SOURCE}"
+        target: "${VOLUME_DOMAINS_TARGET}"
+        ${VOLUME_DOMAINS_OPTIONS}

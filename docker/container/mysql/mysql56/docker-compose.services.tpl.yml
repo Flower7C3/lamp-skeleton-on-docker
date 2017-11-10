@@ -9,18 +9,27 @@
       - 3306
     image: flower7c3/mysql:5.6
     networks:
-      webserver:
-        ipv4_address: ${MYSQL56_DOCKER_NETWORK_IP}
+      ${NETWORK_NAME}:
+        # ipv4_address: ${MYSQL56_DOCKER_NETWORK_IP}
     ports:
       - "${MYSQL56_BRIDGED_PORT}:3306"
     restart: always
     volumes:
-      - "${VOLUME_SSH}:/root/.ssh/"
-      - "projects-sync:/var/www/projects/:nocopy"
-      - "domains-sync:/var/www/domains/:nocopy"
-      # - "${VOLUME_PROJECTS}:/var/www/projects/"
-      # - "${VOLUME_DOMAINS}:/var/www/domains/"
-      - "mysql56-sync:/var/lib/mysql/:nocopy"
-      # - "${VOLUME_DATABASES}mysql/mysql56/data/:/var/lib/mysql"
-      - "${VOLUME_TOOLS}:/var/www/bin/"
-
+      - type: bind
+        source: "${VOLUME_SSH_SOURCE}"
+        target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_TOOLS_LOCAL_PATH}"
+        target: "${VOLUME_TOOLS_TARGET}"
+      - type: "${VOLUME_PROJECTS_TYPE}"
+        source: "${VOLUME_PROJECTS_SOURCE}"
+        target: "${VOLUME_PROJECTS_TARGET}"
+        ${VOLUME_PROJECTS_OPTIONS}
+      - type: "${VOLUME_DOMAINS_TYPE}"
+        source: "${VOLUME_DOMAINS_SOURCE}"
+        target: "${VOLUME_DOMAINS_TARGET}"
+        ${VOLUME_DOMAINS_OPTIONS}
+      - type: "${VOLUME_MYSQL56_TYPE}"
+        source: "${VOLUME_MYSQL56_LOCAL_PATH}"
+        target: "${VOLUME_MYSQL56_TARGET}"
+        ${VOLUME_MYSQL56_OPTIONS}

@@ -1,4 +1,4 @@
-  mysql55-sync:
+  ${VOLUME_MYSQL55_SOURCE}:
     sync_strategy: '${DOCKER_SYNC_STRATEGY}'
-    src: '${VOLUME_DATABASES}mysql/mysql55/data/'
+    src: '${VOLUME_MYSQL55_LOCAL_PATH}'
     host_disk_mount_mode: 'cached'

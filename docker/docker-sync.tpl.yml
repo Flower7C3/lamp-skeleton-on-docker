@@ -12,7 +12,7 @@ options:
 syncs:
   projects-sync:
     host_disk_mount_mode: 'cached'
-    src: '${VOLUME_PROJECTS}'
+    src: '${VOLUME_PROJECTS_SOURCE}'
     sync_strategy: '${DOCKER_SYNC_STRATEGY}'
     sync_userid: 33
     sync_excludes: ['.git', '.github', '.idea', '.gitignore', '.DS_Store']
@@ -20,7 +20,7 @@ syncs:
     watch_args: '-v'  
   domains-sync:
     host_disk_mount_mode: 'cached'
-    src: '${VOLUME_DOMAINS}'
+    src: '${VOLUME_DOMAINS_SOURCE}'
     sync_strategy: '${DOCKER_SYNC_STRATEGY}'
     sync_userid: 33
     sync_excludes: ['.git', '.github', '.idea', '.gitignore', '.DS_Store']

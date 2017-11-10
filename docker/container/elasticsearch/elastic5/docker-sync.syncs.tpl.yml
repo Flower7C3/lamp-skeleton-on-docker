@@ -1,4 +1,4 @@
-  elasticsearch5-sync:
+  ${VOLUME_ELASTIC5_SOURCE}:
     sync_strategy: '${DOCKER_SYNC_STRATEGY}'
-    src: '${VOLUME_DATABASES}elasticsearch/elasticsearch5/'
+    src: '${VOLUME_ELASTIC5_LOCAL_PATH}'
     host_disk_mount_mode: 'cached'

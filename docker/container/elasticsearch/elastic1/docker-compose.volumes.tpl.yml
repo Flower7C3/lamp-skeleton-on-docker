@@ -1,2 +1,1 @@
-  elasticsearch1-sync:
-    external: true
+  ${VOLUME_ELASTIC1_DEFINITION}

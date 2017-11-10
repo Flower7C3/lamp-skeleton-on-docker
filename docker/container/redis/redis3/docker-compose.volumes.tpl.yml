@@ -1,2 +1,1 @@
-  redis3-sync:
-    external: true
+  ${VOLUME_REDIS3_DEFINITION}

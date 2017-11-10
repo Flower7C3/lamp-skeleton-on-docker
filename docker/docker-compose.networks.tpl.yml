@@ -1,0 +1,11 @@
+networks:
+  ${NETWORK_NAME}:
+    driver: bridge
+    driver_opts:
+      name: compose_webserver
+      # com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.33.0/24
+#          gateway: 192.168.33.254

@@ -1,17 +1,15 @@
-  node5:
+  yarn:
     build:
-      context: ./docker/container/node/node5/
+      context: ./docker/container/yarn/
       dockerfile: Dockerfile
-    container_name: node5
+    container_name: yarn
     dns: "${DNS_IP}"
-    expose:
-      - 8080
     ports:
-      - "${NODE5_BRIDGED_PORT}:8080"
-    image: flower7c3/node:5
+      - "${YARN_BRIDGED_PORT}:8080"
+    image: flower7c3/yarn
     networks:
       ${NETWORK_NAME}:
-        # ipv4_address: ${NODE5_DOCKER_NETWORK_IP}
+        # ipv4_address: ${YARN_DOCKER_NETWORK_IP}
     restart: 'no'
     tty: true
     volumes:

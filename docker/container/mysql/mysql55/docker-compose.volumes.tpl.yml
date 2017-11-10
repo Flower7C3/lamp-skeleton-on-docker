@@ -1,2 +1,1 @@
-  mysql55-sync:
-    external: true
+  ${VOLUME_MYSQL55_DEFINITION}

@@ -1,6 +1,4 @@
 
 volumes:
-  domains-sync:
-    external: true
-  projects-sync:
-    external: true
+  ${VOLUME_DOMAINS_DEFINITION}
+  ${VOLUME_PROJECTS_DEFINITION}
