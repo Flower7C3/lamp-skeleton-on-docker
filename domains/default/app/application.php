@@ -1,13 +1,13 @@
 <?php
 
 
-require 'class/Resource.class.php';
-require 'class/SiteResource.class.php';
-require 'class/ToolResource.class.php';
-require 'class/InfoResource.class.php';
-require 'class/PathResource.class.php';
-require 'config/config.dist.php';
-require 'config/config.php';
+require __DIR__ . '/class/Resource.class.php';
+require __DIR__ . '/class/SiteResource.class.php';
+require __DIR__ . '/class/ToolResource.class.php';
+require __DIR__ . '/class/InfoResource.class.php';
+require __DIR__ . '/class/PathResource.class.php';
+require __DIR__ . '/config/config.dist.php';
+require __DIR__ . '/config/config.php';
 
 /**
  * versions
@@ -20,7 +20,7 @@ $jqueryVersion = '3.1.1';
  * post config
  */
 $suffix = '\.local';
-if (isset($VHOSTS[$currentVhost]) && isset($_VHOSTS_META[$currentVhost])) {
+if (isset($VHOSTS[$currentVhost], $_VHOSTS_META[$currentVhost])) {
     if (isset($_VHOSTS_META[$currentVhost]->suffix)) {
         $suffix = '.' . $_VHOSTS_META[$currentVhost]->suffix;
     } else {
@@ -207,7 +207,9 @@ while (false !== ($filename = readdir($dh))) {
 
         $data['path'][] = new PathResource('real', $realPath);
 
-        $CLIENTS[$data['client_id']] = $data['client_id'];
+        if (!empty($data['client_id'])) {
+            $CLIENTS[$data['client_id']] = $data['client_id'];
+        }
 
         $DOMAINS[] = (object)$data;
 
