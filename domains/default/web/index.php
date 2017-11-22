@@ -30,7 +30,7 @@
                     </button>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <? if (!empty($CLIENTS) || !empty($TAGS)): ?>
+                    <? if (!empty($VHOSTS) || !empty($CLIENTS) || !empty($TAGS)): ?>
                         <ul class="nav navbar-nav">
                             <? if (!empty($VHOSTS)): ?>
                                 <li class="dropdown">
