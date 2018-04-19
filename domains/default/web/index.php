@@ -6,9 +6,9 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/<?= $bootstrapVersion ?>/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/<?= $bootstrapVersion ?>/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker3.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/<?= $fontawesomeVersion ?>/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/<?= $bootstrapTableVersion?>/bootstrap-table.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/<?= $bootstrapDatePickerVersion?>/css/bootstrap-datepicker3.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/<?= $fontAwesomeVersion ?>/css/font-awesome.min.css">
         <link rel="stylesheet" href="dist/main.css">
         <link rel='shortcut icon' href='dist/icon.png'/>
     </head>
@@ -164,23 +164,23 @@
                             <thead>
                                 <tr>
                                     <th
-                                        data-field="name"
-                                        data-sortable="true"
+                                            data-field="name"
+                                            data-sortable="true"
                                     >
                                         <em class="fa fa-file-o"></em> Name
                                     </th>
                                     <th
-                                        style="width:140px;">
+                                            style="width:140px;">
                                         <em class="fa fa-fw fa-tags"></em> Tags
                                     </th>
                                     <th
-                                        data-field="date"
-                                        data-sortable="true"
-                                        style="width:140px;">
+                                            data-field="date"
+                                            data-sortable="true"
+                                            style="width:140px;">
                                         <em class="fa fa-fw fa-calendar"></em> Date
                                     </th>
                                     <th
-                                        style="width:140px;">
+                                            style="width:140px;">
                                         <em class="fa fa-fw fa-link"></em> Links
                                     </th>
                                 </tr>
@@ -417,10 +417,10 @@
         <? endif; ?>
         <script src="//code.jquery.com/jquery-<?= $jqueryVersion ?>.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/<?= $bootstrapVersion ?>/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/locales/bootstrap-datepicker.pl.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/<?= $bootstrapTableVersion?>/bootstrap-table.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/<?=$bootstrapGrowlVersion?>/bootstrap-growl.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/<?= $bootstrapDatePickerVersion ?>/js/bootstrap-datepicker.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/<?= $bootstrapDatePickerVersion ?>/locales/bootstrap-datepicker.pl.min.js"></script>
         <script src="dist/main.js"></script>
     </body>
 </html>

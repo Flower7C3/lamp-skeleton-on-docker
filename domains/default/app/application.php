@@ -12,9 +12,12 @@ require __DIR__ . '/config/config.php';
 /**
  * versions
  */
+$jqueryVersion = '3.3.1';
+$fontAwesomeVersion = '4.7.0';
 $bootstrapVersion = '3.3.7';
-$fontawesomeVersion = '4.7.0';
-$jqueryVersion = '3.1.1';
+$bootstrapDatePickerVersion = '1.6.4';
+$bootstrapTableVersion = '1.12.1';
+$bootstrapGrowlVersion = '1.0.6';
 
 /**
  * post config
