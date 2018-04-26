@@ -1,4 +1,0 @@
-  ${VOLUME_MONGO3_SOURCE}:
-    sync_strategy: '${DOCKER_SYNC_STRATEGY}'
-    src: '${VOLUME_MONGO3_LOCAL_PATH}'
-    host_disk_mount_mode: 'cached'

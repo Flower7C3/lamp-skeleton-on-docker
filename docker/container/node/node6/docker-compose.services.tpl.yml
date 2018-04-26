@@ -3,29 +3,34 @@
       context: ./docker/container/node/node6/
       dockerfile: Dockerfile
     container_name: node6
-    dns: "${DNS_IP}"
+    dns: "${DNS_IP-8.8.8.8}"
     expose:
       - 8080
     ports:
-      - "${NODE6_BRIDGED_PORT}:8080"
+      - "${NODE6_BRIDGED_PORT-9006}:8080"
     image: flower7c3/node:6
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${NODE6_DOCKER_NETWORK_IP}
     restart: 'no'
     tty: true
     volumes:
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
+        volume:
+          cached: true

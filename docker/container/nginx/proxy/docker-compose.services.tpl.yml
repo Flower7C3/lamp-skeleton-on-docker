@@ -6,26 +6,31 @@
       - 80
     image: jwilder/nginx-proxy
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${PROXY_DOCKER_NETWORK_IP}
     ports:
-      - "${PROXY_HTTP0_BRIDGED_PORT}:80"
-      - "${PROXY_HTTPS_BRIDGED_PORT}:443"
+      - "${PROXY_HTTP0_BRIDGED_PORT-80}:80"
+      - "${PROXY_HTTPS_BRIDGED_PORT-443}:443"
     restart: always
     volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+        volume:
+          cached: true
 

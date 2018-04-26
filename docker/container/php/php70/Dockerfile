@@ -21,8 +21,8 @@ RUN wget https://phar.phpunit.de/phpunit.phar \
 
 
 RUN pecl install \
-    intl xdebug redis mongodb mongo \
-  && docker-php-ext-enable xdebug redis mongo mongodb
+    intl xdebug  \
+  && docker-php-ext-enable xdebug 
 
 RUN locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8
 
@@ -34,13 +34,13 @@ RUN docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip gd \
 #    && docker-php-ext-install -j$(nproc) gd
 
 ### install ldap
-#RUN apt-get install -y --fix-missing \
-#        libldb-dev \
-#        libldap2-dev \
-#    && ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
-#    && ln -s /usr/lib/x86_64-linux-gnu/liblber.so /usr/lib/liblber.so \
-#    && docker-php-ext-install ldap \
-#    && docker-php-ext-enable ldap
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
+    && apt-get install -y --fix-missing \
+        ldap-utils \
+        libldb-dev \
+        libldap2-dev \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install ldap
 
 
 
@@ -52,6 +52,7 @@ RUN ln -sf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enab
 
 ### configure PHP
 ADD ./php.ini /usr/local/etc/php/php.ini
-ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.off
+ADD ./xdebug.sh /bin/xdebug
 
 WORKDIR /var/www/domains

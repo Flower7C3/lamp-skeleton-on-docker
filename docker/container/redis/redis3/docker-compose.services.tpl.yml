@@ -1,30 +1,36 @@
   redis3:
     container_name: redis3
-    dns: "${DNS_IP}"
+    dns: "${DNS_IP-8.8.8.8}"
     image: redis:3
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${REDIS3_DOCKER_NETWORK_IP}
     ports:
-      - "${REDIS3_BRIDGED_PORT}:6379"
+      - "${REDIS3_BRIDGED_PORT-6379}:6379"
     restart: 'no'
     tty: true
     volumes:
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
-      - type: "${VOLUME_REDIS3_TYPE}"
+        volume:
+          cached: true
+      - type: bind
         source: "${VOLUME_REDIS3_LOCAL_PATH}"
-        target: "${VOLUME_REDIS3_TARGET}"
-        ${VOLUME_REDIS3_OPTIONS}
+        target: "/data/"
+        volume:
+          cached: true

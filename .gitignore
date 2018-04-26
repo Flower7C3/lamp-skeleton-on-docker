@@ -6,6 +6,7 @@ backup/*
 !certs/Icon\r
 
 docker/_config.local.sh
+docker/.bash_history
 
 certs/*.crt
 certs/*.csr
@@ -14,7 +15,7 @@ certs/*.key.org
 !certs/Icon\r
 
 docker-compose.yml
-docker-sync.yml
+.env
 
 domains/*
 domains/domains.list
@@ -41,4 +42,3 @@ database/redis/*
 
 !bin/Icon\r
 bin/private/
-

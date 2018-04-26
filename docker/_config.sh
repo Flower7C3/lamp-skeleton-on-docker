@@ -13,20 +13,10 @@ fi
 if [[ "$osType" == "windows" ]]; then
     HOST_IPS=(127.0.0.1)
     XDEBUG_HOST=127.0.0.1
-    DOCKER_SYNC_STRATEGY="unison"
 else
-    if [[ "$osType" == "osx" ]]; then
-        DOCKER_SYNC_STRATEGY="native_osx"
-    elif [[ "$osType" == "linux" ]]; then
-        DOCKER_SYNC_STRATEGY="native_linux"
-    else
-        DOCKER_SYNC_STRATEGY="unison"
-    fi
-    HOST_IPS=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
-    XDEBUG_HOST=${HOST_IPS[1]}
+    HOST_IPS=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | grep broadcast | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | grep -v '127.'))
+    XDEBUG_HOST=${HOST_IPS[0]}
 fi
-
-DNS_IP='8.8.8.8'
 
 # Containers
 declare -A CONTAINER
@@ -50,9 +40,18 @@ CONTAINER[redis/redis3]=enabled
 CONTAINER[mongo/mongo3]=enabled
 
 # shared volumes
-VOLUME_ROOT='~/www/'
-VOLUME_SSH_LOCAL_PATH='~/.ssh/'
-VOLUME_SSH_SOURCE="${VOLUME_SSH_LOCAL_PATH}"
+VOLUME_ROOT="${HOME}/www/"
+VOLUME_SSH_LOCAL_PATH="${HOME}/.ssh/"
+VOLUME_SSH_LOCAL_PATH="${VOLUME_SSH_LOCAL_PATH}"
 VOLUME_SSH_TARGET="/root/.ssh/"
+VOLUME_BASH_HISTORY_LOCAL_PATH="${VOLUME_ROOT}docker/.bash_history"
+VOLUME_BASH_HISTORY_TARGET="/root/.bash_history"
 
-NETWORK_NAME='webserver'
+# project volumes
+VOLUME_PROJECTS_LOCAL_PATH=${VOLUME_ROOT}'projects/'
+VOLUME_PROJECTS_TARGET='/var/www/projects/'
+VOLUME_DOMAINS_LOCAL_PATH=${VOLUME_ROOT}'domains/'
+VOLUME_DOMAINS_TARGET='/var/www/domains/'
+VOLUME_TOOLS_LOCAL_PATH=${VOLUME_ROOT}'bin/'
+VOLUME_TOOLS_TARGET='/var/www/bin/'
+VOLUME_DATABASES_LOCAL_PATH=${VOLUME_ROOT}'database/'

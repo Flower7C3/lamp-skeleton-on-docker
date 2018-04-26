@@ -1,30 +1,36 @@
   elastic5:
     container_name: elastic5
-    dns: "${DNS_IP}"
+    dns: "${DNS_IP-8.8.8.8}"
     image: elasticsearch:5
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${ELASTICSEARCH5_DOCKER_NETWORK_IP}
     ports:
-      - "${ELASTICSEARCH5_BRIDGED_PORT}:9200"
+      - "${ELASTICSEARCH5_BRIDGED_PORT-9205}:9200"
     restart: 'no'
     tty: true
     volumes:
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
-      - type: "${VOLUME_ELASTIC5_TYPE}"
+        volume:
+          cached: true
+      - type: bind
         source: "${VOLUME_ELASTIC5_LOCAL_PATH}"
-        target: "${VOLUME_ELASTIC5_TARGET}"
-        ${VOLUME_ELASTIC5_OPTIONS}
+        target: "/usr/share/elasticsearch/data/"
+        volume:
+          cached: true

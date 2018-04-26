@@ -4,32 +4,38 @@
       dockerfile: Dockerfile
     container_name: mysql56
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL56_ROOT_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL56_ROOT_PASSWORD-rootpasswd}"
     expose:
       - 3306
     image: flower7c3/mysql:5.6
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${MYSQL56_DOCKER_NETWORK_IP}
     ports:
-      - "${MYSQL56_BRIDGED_PORT}:3306"
+      - "${MYSQL56_BRIDGED_PORT-3356}:3306"
     restart: always
     volumes:
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
-      - type: "${VOLUME_MYSQL56_TYPE}"
+        volume:
+          cached: true
+      - type: bind
         source: "${VOLUME_MYSQL56_LOCAL_PATH}"
-        target: "${VOLUME_MYSQL56_TARGET}"
-        ${VOLUME_MYSQL56_OPTIONS}
+        target: "/var/lib/mysql/"
+        volume:
+          cached: true

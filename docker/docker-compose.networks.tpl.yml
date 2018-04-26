@@ -1,5 +1,5 @@
 networks:
-  ${NETWORK_NAME}:
+  webserver:
     driver: bridge
     driver_opts:
       name: compose_webserver

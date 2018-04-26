@@ -54,6 +54,7 @@ RUN ln -sf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enab
 ### configure PHP
 ADD ./php.ini /usr/local/etc/php/php.ini
 RUN pecl install xdebug
-ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.off
+ADD ./xdebug.sh /bin/xdebug
 
 WORKDIR /var/www/domains

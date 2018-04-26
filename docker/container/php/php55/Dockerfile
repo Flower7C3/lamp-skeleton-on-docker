@@ -30,7 +30,13 @@ RUN yes | pecl install intl xdebug \
     && docker-php-ext-install -j$(nproc) gd
 
 
-
+RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
+    && apt-get install -y --fix-missing \
+        ldap-utils \
+        libldb-dev \
+        libldap2-dev \
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+    && docker-php-ext-install ldap
 
 ### configure APACHE
 RUN a2enmod vhost_alias
@@ -40,6 +46,7 @@ RUN ln -sf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enab
 
 ### configure PHP
 ADD ./php.ini /usr/local/etc/php/php.ini
-ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+ADD ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.off
+ADD ./xdebug.sh /bin/xdebug
 
 WORKDIR /var/www/domains

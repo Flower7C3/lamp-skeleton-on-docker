@@ -4,33 +4,39 @@
       dockerfile: Dockerfile
     container_name: mysql55
     environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL55_ROOT_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL55_ROOT_PASSWORD-rootpasswd}"
     expose:
       - 3306
     image: flower7c3/mysql:5.5
     networks:
-      ${NETWORK_NAME}:
+      webserver:
         # ipv4_address: ${MYSQL55_DOCKER_NETWORK_IP}
     ports:
-      - "${MYSQL_BRIDGED_PORT}:3306"
-      - "${MYSQL55_BRIDGED_PORT}:3306"
+      - "${MYSQL_BRIDGED_PORT-3306}:3306"
+      - "${MYSQL55_BRIDGED_PORT-3355}:3306"
     restart: always
     volumes:
       - type: bind
-        source: "${VOLUME_SSH_SOURCE}"
+        source: "${VOLUME_SSH_LOCAL_PATH}"
         target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
       - type: bind
         source: "${VOLUME_TOOLS_LOCAL_PATH}"
         target: "${VOLUME_TOOLS_TARGET}"
-      - type: "${VOLUME_PROJECTS_TYPE}"
-        source: "${VOLUME_PROJECTS_SOURCE}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
         target: "${VOLUME_PROJECTS_TARGET}"
-        ${VOLUME_PROJECTS_OPTIONS}
-      - type: "${VOLUME_DOMAINS_TYPE}"
-        source: "${VOLUME_DOMAINS_SOURCE}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
         target: "${VOLUME_DOMAINS_TARGET}"
-        ${VOLUME_DOMAINS_OPTIONS}
-      - type: "${VOLUME_MYSQL55_TYPE}"
+        volume:
+          cached: true
+      - type: bind
         source: "${VOLUME_MYSQL55_LOCAL_PATH}"
-        target: "${VOLUME_MYSQL55_TARGET}"
-        ${VOLUME_MYSQL55_OPTIONS}
+        target: "/var/lib/mysql/"
+        volume:
+          cached: true
