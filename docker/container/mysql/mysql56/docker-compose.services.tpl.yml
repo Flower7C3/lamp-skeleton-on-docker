@@ -10,7 +10,6 @@
     image: flower7c3/mysql:5.6
     networks:
       webserver:
-        # ipv4_address: ${MYSQL56_DOCKER_NETWORK_IP}
     ports:
       - "${MYSQL56_BRIDGED_PORT-3356}:3306"
     restart: always

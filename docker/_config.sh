@@ -1,3 +1,6 @@
+docker_compose_file="./docker-compose.yml"
+docker_env_file="./.env"
+
 osType="unknown"
 if [ "$(uname)" == "Darwin" ]; then
     osType="osx"

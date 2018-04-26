@@ -9,7 +9,6 @@
     image: flower7c3/yarn
     networks:
       webserver:
-        # ipv4_address: ${YARN_DOCKER_NETWORK_IP}
     restart: 'no'
     tty: true
     volumes:
