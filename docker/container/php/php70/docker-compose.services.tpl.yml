@@ -10,7 +10,6 @@
     image: flower7c3/php:7.0-apache
     networks:
       webserver:
-        # ipv4_address: ${PHP70_DOCKER_NETWORK_IP}
     restart: always
     volumes:
       - type: bind

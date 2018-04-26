@@ -4,7 +4,6 @@
     image: redis:3
     networks:
       webserver:
-        # ipv4_address: ${REDIS3_DOCKER_NETWORK_IP}
     ports:
       - "${REDIS3_BRIDGED_PORT-6379}:6379"
     restart: 'no'

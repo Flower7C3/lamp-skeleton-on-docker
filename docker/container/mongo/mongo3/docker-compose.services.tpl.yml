@@ -11,7 +11,6 @@
     image: flower7c3/mongo:3
     networks:
       webserver:
-        # ipv4_address: ${MONGO3_DOCKER_NETWORK_IP}
     ports:
       - "${MONGO3_BRIDGED_PORT-27017}:27017"
     restart: always

@@ -10,7 +10,6 @@
     image: flower7c3/mysql:5.5
     networks:
       webserver:
-        # ipv4_address: ${MYSQL55_DOCKER_NETWORK_IP}
     ports:
       - "${MYSQL_BRIDGED_PORT-3306}:3306"
       - "${MYSQL55_BRIDGED_PORT-3355}:3306"

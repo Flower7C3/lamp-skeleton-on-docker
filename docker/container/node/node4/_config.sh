@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-NODE4_DOCKER_NETWORK_IP=192.168.33.104

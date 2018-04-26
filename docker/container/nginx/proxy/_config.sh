@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-PROXY_DOCKER_NETWORK_IP=192.168.33.1
-PROXY_DEFAULT_HOST=php55.127.0.0.1.xip.io

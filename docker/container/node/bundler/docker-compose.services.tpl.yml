@@ -9,7 +9,6 @@
     image: flower7c3/node:4-bundler
     networks:
       webserver:
-        # ipv4_address: ${NODE4B_DOCKER_NETWORK_IP}
     restart: 'no'
     tty: true
     volumes:

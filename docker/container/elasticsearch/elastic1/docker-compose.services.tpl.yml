@@ -4,7 +4,6 @@
     image: elasticsearch:1
     networks:
       webserver:
-        # ipv4_address: ${ELASTICSEARCH1_DOCKER_NETWORK_IP}
     ports:
       - "${ELASTICSEARCH1_BRIDGED_PORT-9201}:9200"
     restart: 'no'

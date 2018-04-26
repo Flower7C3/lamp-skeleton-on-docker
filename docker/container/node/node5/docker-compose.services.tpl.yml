@@ -11,7 +11,6 @@
     image: flower7c3/node:5
     networks:
       webserver:
-        # ipv4_address: ${NODE5_DOCKER_NETWORK_IP}
     restart: 'no'
     tty: true
     volumes:
