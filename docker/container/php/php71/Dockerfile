@@ -15,7 +15,7 @@ RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-set
     && php composer-setup.php -- --install-dir=/bin --filename=composer
 
 ### install phpunit
-RUN wget https://phar.phpunit.de/phpunit.phar \
+RUN curl -L https://phar.phpunit.de/phpunit.phar > phpunit.phar \
     && chmod +x phpunit.phar \
     && mv phpunit.phar /usr/local/bin/phpunit
 

@@ -16,6 +16,9 @@ certs/*.key.org
 
 docker-compose.yml
 .env
+!docker/template/docker-compose.yml
+!docker/template/.env
+
 
 domains/*
 domains/domains.list

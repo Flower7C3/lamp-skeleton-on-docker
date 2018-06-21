@@ -1,0 +1,33 @@
+  php72:
+    build:
+      context: ./docker/container/php/php72/
+      dockerfile: Dockerfile
+    container_name: php72
+    dns: "${DNS_IP-8.8.8.8}"
+    environment:
+      VIRTUAL_HOST: "${PHP72_VIRTUAL_HOSTS}"
+      XDEBUG_CONFIG: "remote_host=${XDEBUG_HOST-192.168.0.1}"
+    image: flower7c3/php:7.2-apache
+    networks:
+      webserver:
+    restart: always
+    volumes:
+      - type: bind
+        source: "${VOLUME_SSH_LOCAL_PATH}"
+        target: "${VOLUME_SSH_TARGET}"
+      - type: bind
+        source: "${VOLUME_BASH_HISTORY_LOCAL_PATH}"
+        target: "${VOLUME_BASH_HISTORY_TARGET}"
+      - type: bind
+        source: "${VOLUME_TOOLS_LOCAL_PATH}"
+        target: "${VOLUME_TOOLS_TARGET}"
+      - type: bind
+        source: "${VOLUME_PROJECTS_LOCAL_PATH}"
+        target: "${VOLUME_PROJECTS_TARGET}"
+        volume:
+          cached: true
+      - type: bind
+        source: "${VOLUME_DOMAINS_LOCAL_PATH}"
+        target: "${VOLUME_DOMAINS_TARGET}"
+        volume:
+          cached: true

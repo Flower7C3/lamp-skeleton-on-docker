@@ -15,7 +15,7 @@ RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-set
     && php composer-setup.php -- --install-dir=/bin --filename=composer
 
 ### install phpunit
-RUN wget https://phar.phpunit.de/phpunit.phar \
+RUN curl -L https://phar.phpunit.de/phpunit.phar > phpunit.phar \
     && chmod +x phpunit.phar \
     && mv phpunit.phar /usr/local/bin/phpunit
 
@@ -27,9 +27,9 @@ RUN apt-get update \
   && apt-get install -y \
     imagemagick libmagickwand-dev libmagickcore-dev \
     libmcrypt-dev libcurl4-gnutls-dev libicu-dev libxslt-dev libssl-dev
-RUN yes | pecl install \
-        intl xdebug redis mongodb mongo \
-    && docker-php-ext-enable redis mongo mongodb
+#RUN yes | pecl install \
+#        intl xdebug redis mongodb mongo \
+#    && docker-php-ext-enable redis mongo mongodb
 RUN locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8 \
     && docker-php-ext-install -j$(nproc) intl mysqli pdo_mysql opcache zip curl bcmath mcrypt iconv exif json session xmlrpc xsl \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \

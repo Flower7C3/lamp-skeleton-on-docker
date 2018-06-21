@@ -1,12 +1,14 @@
-  yarn:
+  node10:
     build:
-      context: ./docker/container/yarn/
+      context: ./docker/container/node/node10/
       dockerfile: Dockerfile
-    container_name: yarn
+    container_name: node10
     dns: "${DNS_IP-8.8.8.8}"
+    expose:
+      - 8080
     ports:
-      - "${YARN_BRIDGED_PORT-9011}:8080"
-    image: flower7c3/yarn
+      - "${NODE10_BRIDGED_PORT-9010}:8080"
+    image: flower7c3/node:10
     networks:
       webserver:
     restart: 'no'

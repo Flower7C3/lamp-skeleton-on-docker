@@ -8,21 +8,22 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get update \
         vim mc wget curl git \
         zip python
 
+
 ### install composer
 RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-setup.php.sig \
     && curl -sS https://getcomposer.org/installer | tee composer-setup.php | sha384sum -c composer-setup.php.sig \
     && php composer-setup.php -- --install-dir=/bin --filename=composer
 
 ### install phpunit
-RUN wget https://phar.phpunit.de/phpunit.phar \
+RUN curl -L https://phar.phpunit.de/phpunit.phar > phpunit.phar \
     && chmod +x phpunit.phar \
     && mv phpunit.phar /usr/local/bin/phpunit
 
 
 
-RUN pecl install \
-    intl xdebug  \
-  && docker-php-ext-enable xdebug 
+#RUN pecl install \
+#    intl xdebug  \
+#  && docker-php-ext-enable xdebug
 
 RUN locale-gen en_US.UTF-8 && export LANG=en_US.UTF-8 && export LANG=C.UTF-8
 
