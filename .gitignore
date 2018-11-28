@@ -5,9 +5,6 @@
 backup/*
 !certs/Icon\r
 
-docker/_config.local.sh
-docker/.bash_history
-
 certs/*.crt
 certs/*.csr
 certs/*.key
@@ -16,32 +13,31 @@ certs/*.key.org
 
 docker-compose.yml
 .env
+
+docker/_config.local.sh
+docker/.bash_history
 !docker/template/docker-compose.yml
 !docker/template/.env
+docker/domains/*
+!docker/domains/default/
+!docker/database/Icon\r
+docker/database/mysql/*
+!docker/database/mysql/Icon\r
+docker/database/elasticsearch/*
+!docker/database/elasticsearch/Icon\r
+docker/database/mongo/*
+!docker/database/mongo/Icon\r
+docker/database/redis/*
+!docker/database/redis/Icon\r
 
+docksal/domains/*
 
-domains/*
-domains/domains.list
+config/_hosts.list
+!config/_hosts.list.dist
 !certs/Icon\r
-!domains/default/
-!domains/domains.list.dist
 
 projects/*
 !projects/Icon\r
-
-!database/Icon\r
-
-database/mysql/*
-!database/mysql/Icon\r
-
-database/elasticsearch/*
-!database/elasticsearch/Icon\r
-
-database/mongo/*
-!database/mongo/Icon\r
-
-database/redis/*
-!database/redis/Icon\r
 
 !bin/Icon\r
 bin/private/

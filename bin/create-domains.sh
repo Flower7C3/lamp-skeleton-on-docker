@@ -2,31 +2,35 @@
 
 cd `dirname ${BASH_SOURCE}`
 
-domains_dir='../domains/'
-projects_dir='../projects/'
-domains_file='_hosts.list'
-proxy_ocal='127.0.0.1.xip.io'
+projects_dir='../../projects/'
+domains_file_path='../config/_hosts.list'
+domains_docker_dir='../docker/domains/'
+domains_docksal_dir='../docksal/domains/'
+proxy_local='127.0.0.1.xip.io'
+proxy_docksal=''
 proxy_ips=($(ifconfig | grep "inet" | grep -v Bcast:0.0.0.0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'))
 
-cd $domains_dir
-echo "Cleanup ${proxy_ocal}"
-find *${proxy_ocal} -maxdepth 1  -type l -delete
+echo "Cleanup proxy_local ${proxy_local}"
+(cd ${domains_docker_dir} && find *${proxy_local} -maxdepth 1  -type l -delete)
+
+echo "Cleanup proxy_docksal"
+(cd ${domains_docksal_dir} && find *${proxy_docksal} -maxdepth 1  -type l -delete)
 
 echo "Cleanup shared proxies"
 for proxy_IP in "${proxy_ips[@]}"; do
 	proxy_shared=$proxy_IP'.xip.io'
-	find *${proxy_shared} -maxdepth 1  -type l -delete
+	(cd ${domains_docker_dir} && find *${proxy_shared} -maxdepth 1  -type l -delete)
 done
 
 echo "Proxy default"
 for proxy_IP in "${proxy_ips[@]}"; do
-	proxy_shared=$proxy_IP'.xip.io'
-	ln -sf default ${proxy_IP}
-	ln -sf default ${proxy_shared}
+	proxy_shared="${proxy_IP}.xip.io"
+	(cd ${domains_docker_dir} && ln -sf default ${proxy_IP})
+	(cd ${domains_docker_dir} && ln -sf default ${proxy_shared})
 done
 
 echo "New domains:"
-cat $domains_file |                      
+cat ${domains_file_path} |                      
 while read -r line;
 do
 	if [[ $line == \(* ]];
@@ -41,17 +45,25 @@ do
 
 		project_dir_path=${projects_dir}${row[dir]}
 
-   		echo "- ${domain} @ ${container} via ${proxy_ocal}"
-		domain_local=${domain}'.'${tld}'.'${container}'.'${proxy_ocal}
-		ln -sf ${project_dir_path} ${domain_local}
+		if [[ ! "${row[docker]}" || "${row[docker]}" != "false" ]]; then
+	   		echo "- ${domain} @ ${container} via ${proxy_local}"
+			domain_local="${domain}.${tld}.${container}.${proxy_local}"
+			(cd ${domains_docker_dir} && ln -sf ${project_dir_path} ${domain_local})
+		fi
 
 		if [[ "${row[shared]}" == "true" ]]; then
 			for proxy_IP in "${proxy_ips[@]}"; do
 				proxy_shared=$proxy_IP'.xip.io'
 		   		echo "- ${domain} @ ${container} via ${proxy_shared}"
-				domain_shared=${domain}'.'${tld}'.'${container}'.'${proxy_shared}
-				ln -sf ${project_dir_path} ${domain_shared}
+				domain_shared="${domain}.${tld}.${container}.${proxy_shared}"
+				(cd ${domains_docker_dir} && ln -sf ${project_dir_path} ${domain_shared})
 			done
+		fi
+
+		if [[ "${row[docksal]}" == "true" ]]; then
+			domain_docksal="${domain}.${tld}"
+	   		echo "- ${domain_docksal} via Docksal"
+			(cd ${domains_docksal_dir} && ln -sf ${project_dir_path} ${domain_docksal})
 		fi
 
 	fi
