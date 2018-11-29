@@ -25,8 +25,8 @@ done
 echo "Proxy default"
 for proxy_IP in "${proxy_ips[@]}"; do
 	proxy_shared="${proxy_IP}.xip.io"
-	(cd ${domains_docker_dir} && ln -sf default ${proxy_IP})
-	(cd ${domains_docker_dir} && ln -sf default ${proxy_shared})
+	(cd ${domains_docker_dir} && ln -snf default ${proxy_IP})
+	(cd ${domains_docker_dir} && ln -snf default ${proxy_shared})
 done
 
 echo "New domains:"
@@ -48,7 +48,7 @@ do
 		if [[ ! "${row[docker]}" || "${row[docker]}" != "false" ]]; then
 	   		echo "- ${domain} @ ${container} via ${proxy_local}"
 			domain_local="${domain}.${tld}.${container}.${proxy_local}"
-			(cd ${domains_docker_dir} && ln -sf ${project_dir_path} ${domain_local})
+			(cd ${domains_docker_dir} && ln -snf ${project_dir_path} ${domain_local})
 		fi
 
 		if [[ "${row[shared]}" == "true" ]]; then
@@ -56,14 +56,16 @@ do
 				proxy_shared=$proxy_IP'.xip.io'
 		   		echo "- ${domain} @ ${container} via ${proxy_shared}"
 				domain_shared="${domain}.${tld}.${container}.${proxy_shared}"
-				(cd ${domains_docker_dir} && ln -sf ${project_dir_path} ${domain_shared})
+				(cd ${domains_docker_dir} && ln -snf ${project_dir_path} ${domain_shared})
 			done
 		fi
 
 		if [[ "${row[docksal]}" == "true" ]]; then
 			domain_docksal="${domain}.${tld}"
+			domain_docksal="${domain_docksal//\./_}"
+			domain_docksal="${domain_docksal//-/_}"
 	   		echo "- ${domain_docksal} via Docksal"
-			(cd ${domains_docksal_dir} && ln -sf ${project_dir_path} ${domain_docksal})
+			(cd ${domains_docksal_dir} && ln -snf ${project_dir_path} ${domain_docksal})
 		fi
 
 	fi
