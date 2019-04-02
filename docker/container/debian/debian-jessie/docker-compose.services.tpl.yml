@@ -4,5 +4,5 @@
       dockerfile: Dockerfile
     container_name: debian
     image: flower7c3/debian:jessie
-    restart: 'no'
+    # restart: 'no'
     tty: true

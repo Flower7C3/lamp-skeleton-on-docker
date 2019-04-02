@@ -9,7 +9,7 @@
     image: flower7c3/node:4-bundler
     networks:
       webserver:
-    restart: 'no'
+    # restart: 'no'
     tty: true
     volumes:
       - type: bind

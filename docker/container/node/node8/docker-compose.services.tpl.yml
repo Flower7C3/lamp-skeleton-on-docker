@@ -11,7 +11,7 @@
     image: flower7c3/node:8
     networks:
       webserver:
-    restart: 'no'
+    # restart: 'no'
     tty: true
     volumes:
       - type: bind

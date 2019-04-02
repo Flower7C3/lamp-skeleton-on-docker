@@ -13,7 +13,7 @@
       webserver:
     ports:
       - "${MONGO3_BRIDGED_PORT-27017}:27017"
-    restart: always
+    # restart: always
     volumes:
       - type: bind
         source: "${VOLUME_SSH_LOCAL_PATH}"

@@ -13,7 +13,7 @@
     ports:
       - "${MYSQL_BRIDGED_PORT-3306}:3306"
       - "${MYSQL55_BRIDGED_PORT-3355}:3306"
-    restart: always
+    # restart: always
     volumes:
       - type: bind
         source: "${VOLUME_SSH_LOCAL_PATH}"

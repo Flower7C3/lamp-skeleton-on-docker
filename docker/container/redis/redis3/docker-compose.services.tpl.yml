@@ -6,7 +6,7 @@
       webserver:
     ports:
       - "${REDIS3_BRIDGED_PORT-6379}:6379"
-    restart: 'no'
+    # restart: 'no'
     tty: true
     volumes:
       - type: bind

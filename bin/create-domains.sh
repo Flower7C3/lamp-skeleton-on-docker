@@ -61,7 +61,11 @@ do
 		fi
 
 		if [[ "${row[docksal]}" == "true" ]]; then
-			domain_docksal="${domain}.${tld}"
+			if [[ "$tld" != "" ]]; then
+				domain_docksal="${domain}.${tld}"
+			else
+				domain_docksal="${domain}"
+			fi
 			domain_docksal="${domain_docksal//\./_}"
 			domain_docksal="${domain_docksal//-/_}"
 	   		echo "- ${domain_docksal} via Docksal"

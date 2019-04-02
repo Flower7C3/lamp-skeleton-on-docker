@@ -10,7 +10,7 @@
     image: flower7c3/php:5.6-apache
     networks:
       webserver:
-    restart: always
+    # restart: always
     volumes:
       - type: bind
         source: "${VOLUME_SSH_LOCAL_PATH}"
